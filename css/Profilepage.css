@@ -1,0 +1,165 @@
+﻿/* ========================
+   General Layout
+======================== */
+main {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    background: #f9fafb;
+    min-height: 50vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ========================
+   Profile Section
+======================== */
+.profile-section {
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.profile-header {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #222;
+    text-align: center;
+}
+
+/* ========================
+   Profile Card Layout
+======================== */
+.profile-card {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.profile-media {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.profile-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e5e7eb;
+    background: #f3f4f6;
+}
+
+/* ========================
+   Profile Form
+======================== */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.profile-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+    .profile-group label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .profile-group input,
+    .profile-group select,
+    .profile-group textarea {
+        padding: 0.7rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+        .profile-group input:focus,
+        .profile-group select:focus,
+        .profile-group textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+        }
+
+    /* ASP.NET Labels */
+    .profile-group span,
+    .profile-group .aspNetLabel {
+        font-size: 1rem;
+        color: #111827;
+        font-weight: 500;
+    }
+
+/* ========================
+   Profile Actions (Buttons)
+======================== */
+.profile-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    grid-column: span 2;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    background: linear-gradient(90deg, #6366f1, #9333ea);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .btn:hover {
+        background: linear-gradient(90deg, #4f46e5, #7e22ce);
+    }
+
+.btn-secondary {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+    .btn-secondary:hover {
+        background: linear-gradient(90deg, #059669, #047857);
+    }
+
+
+/* ========================
+   Responsive Design
+======================== */
+@media (max-width: 768px) {
+    .profile-card {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+    }
+
+    .profile-row {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-actions {
+        text-align: center;
+    }
+}

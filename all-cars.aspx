@@ -1,0 +1,260 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="all-cars.aspx.cs" Inherits="CarDelearShip_Project.all_cars" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <style>
+        .file-input {
+            display: block;
+            margin-bottom: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Main grid layout */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 per row */
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Individual product card */
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+
+        /* Image styling */
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Body */
+        .product-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2a2afc;
+            margin: 5px 0;
+        }
+
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        /* Button */
+        .btn-viewmore {
+            display: inline-block;
+            background: #2a2afc;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+            .btn-viewmore:hover {
+                background: #1e1ed1;
+            }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Apply grid layout to GridView table rows */
+        .product-grid > tbody {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 per row */
+            gap: 20px;
+        }
+
+        /* Remove default table formatting */
+        .product-grid,
+        .product-grid tr,
+        .product-grid td {
+            display: contents; /* let .product-card control layout */
+            border: none !important;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <div class="nav-container">
+                <a href="index.html" class="logo">CarDealer</a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="index.aspx">Home</a></li>
+                        <li><a href="car-buy.aspx">Buy Cars</a></li>
+                        <li><a href="car-sell.aspx">Sell Cars</a></li>
+                        <li><a href="all-cars.aspx">All Cars</a></li>
+                        <li><a href="about.aspx">About</a></li>
+                        <li><a href="contact.aspx">Contact</a></li>
+                        <li>
+                            <asp:HyperLink ID="login" runat="server" NavigateUrl="login.aspx" Text="Login"></asp:HyperLink>
+
+                        </li>
+                        <li>
+                            <asp:HyperLink ID="register" runat="server" NavigateUrl="register.aspx" Text="Register"></asp:HyperLink>
+
+                        </li>
+                        <li>
+                            <!-- PROFILE DROPDOWN -->
+
+                            <asp:Panel ID="profile" runat="server" CssClass="profile-container">
+                                <!-- Hidden checkbox for toggle -->
+                                <input type="checkbox" id="toggleProfile" class="toggle-checkbox" />
+
+                                <!-- Label acts as profile button -->
+                                <label for="toggleProfile">
+                                    <asp:Image ID="imgProfile" runat="server"
+                                        CssClass="profile-pic" Height="39px" />
+                                </label>
+
+                                <!-- Dropdown -->
+                                <div class="dropdown">
+                                    <asp:LinkButton ID="lnkProfile" runat="server" ForeColor="Black">👤 Profile</asp:LinkButton>
+                                    <asp:LinkButton ID="lnkadmin" runat="server" ForeColor="Black" Visible="false">⚙️ Admin</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" ForeColor="Black" OnClick="LinkButton1_Click">🚪 Logout</asp:LinkButton>
+                                </div>
+                            </asp:Panel>
+
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <div>
+                <asp:GridView ID="GridView1" runat="server"
+                    AutoGenerateColumns="False"
+                    CssClass="product-grid"
+                    GridLines="None"
+                    ShowHeader="False"
+                    DataKeyNames="id" OnRowCommand="GridView1_RowCommand">
+                    <Columns>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <div class="car-card">
+
+                                    <img src='<%# Eval("Image1") %>' alt="Car" class="car-image" />
+
+
+                                    <div class="car-details">
+                                        <h3 class="car-title"><%# Eval("Brand") %></h3>
+                                        <p class="car-price">₹<%# Eval("Price") %></p>
+
+                                        <div class="car-info">
+                                            <span><%# Eval("Year") %></span>
+                                            <span><%# Eval("Mileage") %> km</span>
+                                        </div>
+                                        <div class="car-info">
+                                            <span><%# Eval("FuelType") %></span>
+                                            <span><%# Eval("Transmission") %></span>
+                                        </div>
+
+                                        <asp:Button ID="btnView" runat="server"
+                                            Text="View Details"
+                                            CommandName="ViewMore"
+                                            CommandArgument='<%# Container.DataItemIndex %>'
+                                            CssClass="btn" />
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </div>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CarDealer</h3>
+                    <p>Your trusted platform for buying and selling second-hand cars with confidence. We connect buyers and sellers in a secure, transparent marketplace.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook">f</a>
+                        <a href="#" title="Twitter">t</a>
+                        <a href="#" title="Instagram">i</a>
+                        <a href="#" title="LinkedIn">in</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="car-buy.html">Buy Cars</a></li>
+                        <li><a href="car-sell.html">Sell Cars</a></li>
+                        <li><a href="all-cars.html">All Cars</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="testimonials.html">Testimonials</a></li>
+                        <li><a href="contact.html">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📍 123 Car Street, Auto City, AC 12345</p>
+                    <p>📞 (555) 123-4567</p>
+                    <p>✉️ info@cardealer.com</p>
+                    <p>🕒 Mon-Fri: 9AM-6PM</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 CarDealer. All rights reserved. | Designed with ❤️ for car enthusiasts</p>
+            </div>
+        </footer>
+
+        <script src="js/script.js"></script>
+    </form>
+</body>
+</html>

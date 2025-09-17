@@ -1,0 +1,14 @@
+This folder should contain car images for the website.
+
+Required images:
+- car1.jpg (Toyota Camry)
+- car2.jpg (Honda Civic) 
+- car3.jpg (BMW 3 Series)
+- car4.jpg (Ford Focus)
+- car5.jpg (Audi A4)
+- car6.jpg (Mercedes C-Class)
+- hero-bg.jpg (Hero section background)
+- hero-car-marketplace.jpg (NEW: Modern car marketplace with purple gradient theme)
+
+You can use any car images or stock photos for these placeholders.
+Recommended size: 800x600 pixels for car images, 1920x1080 for hero background.
