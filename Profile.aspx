@@ -182,21 +182,5 @@
         </div>
     </form>
 </body>
-<script>
-    // Simple image preview
-    const input = document.getElementById('photo');
-    const previewBtn = document.getElementById('previewBtn');
-    const avatar = document.getElementById('profileAvatar');
-    function preview() {
-        if (input && input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => { avatar.src = e.target.result; };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    if (previewBtn) {
-        previewBtn.addEventListener('click', preview);
-    }
-</script>
 
 </html>

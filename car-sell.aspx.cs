@@ -53,15 +53,7 @@ namespace CarDelearShip_Project.photo
                     profile.Visible = true;
 
                     BindProducts();
-
-                    // fetch image
-                    da = new SqlDataAdapter("select Id,ProfileImage,UserRoll from register where Email = '" + Session["user"] + "'", con);
-                    ds = new DataSet();
-                    da.Fill(ds);
-                    imgProfile.ImageUrl = ds.Tables[0].Rows[0]["ProfileImage"].ToString();
-
-                    userroll = ds.Tables[0].Rows[0]["UserRoll"].ToString();
-
+                    getprofile();
                     if (userroll == "admin")
                     {
                         lnkadmin.Visible = true;
@@ -70,8 +62,23 @@ namespace CarDelearShip_Project.photo
             }
         }
 
+        void getprofile()
+        {
+            da = new SqlDataAdapter("select Id,ProfileImage,UserRoll from register where Email = '" + Session["user"] + "'", con);
+            ds = new DataSet();
+            da.Fill(ds);
+            imgProfile.ImageUrl = ds.Tables[0].Rows[0]["ProfileImage"].ToString();
 
-      
+            userroll = ds.Tables[0].Rows[0]["UserRoll"].ToString();
+
+            if (userroll == "admin")
+            {
+                lnkadmin.Visible = true;
+            }
+        }
+
+
+
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             // Show the next hidden FileUpload
@@ -107,7 +114,7 @@ namespace CarDelearShip_Project.photo
         void select()
         {
             getCon();
-            da = new SqlDataAdapter("select Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description from SellCar where id = '" + carid + "'", con);
+            da = new SqlDataAdapter("select Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description from SellCar where Id = '" + carid + "'", con);
             ds = new DataSet();
             da.Fill(ds);
 
@@ -134,7 +141,9 @@ namespace CarDelearShip_Project.photo
             {
                 int rowIndex = Convert.ToInt32(e.CommandArgument);
                 carid = Convert.ToInt32(GridView1.DataKeys[rowIndex].Value);
+
                 select();
+                Button1.Text = "Save Edit Data";
             }
 
         }
@@ -154,7 +163,7 @@ namespace CarDelearShip_Project.photo
         {
 
         }
-
+       
         void clear() // After submit the form clear the data
         {
             model.Text = "";
@@ -266,6 +275,13 @@ namespace CarDelearShip_Project.photo
                 {
                     Response.Write("<script>alert('Something Went Wrong !!!');</script>");
                 }
+            }
+            else 
+            {
+                getCon();
+                cmd = new SqlCommand("update SellCar SET Brand = '" + brand.SelectedValue + "',Model='" + model.Text + "',Year = '" + year.SelectedValue + "',Mileage='" + mileage.Text + "',FuelType = '" + fueltype.SelectedValue + "',Transmission = '" + transmission.SelectedValue + "',Price = '" + price.Text + "',Description='" + Description.Text + "' WHERE Id = '" + carid + "'", con);
+                cmd.ExecuteNonQuery();
+                clear();
             }
         }
     }
