@@ -6,114 +6,7 @@
     <title>Car Details</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/profile.css" />
-    <style>
-        .car-grid {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 20px;
-            font-family: Arial, sans-serif;
-        }
-
-            .car-grid tr {
-                background: #fff;
-                border: 1px solid #ddd;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            }
-
-            .car-grid td {
-                padding: 20px;
-                vertical-align: top;
-            }
-
-        /* Slider */
-        .image-slider {
-            position: relative;
-            width: 260px;
-            height: 180px;
-            overflow: hidden;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-        }
-
-            .image-slider img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: none;
-            }
-
-                .image-slider img.active {
-                    display: block;
-                    animation: fadeIn 0.5s ease-in-out;
-                }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.6);
-            color: #fff;
-            border: none;
-            padding: 6px 10px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-            .slider-btn.prev {
-                left: 10px;
-            }
-
-            .slider-btn.next {
-                right: 10px;
-            }
-
-        /* Info layout inside GridView cell */
-        .info-sections {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .info-section {
-            background: #f9f9f9;
-            border-radius: 8px;
-            padding: 12px;
-        }
-
-            .info-section h3 {
-                font-size: 15px;
-                margin-bottom: 8px;
-                color: #333;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 4px;
-            }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px 20px;
-        }
-
-        .info-item {
-            font-size: 14px;
-            color: #444;
-        }
-
-            .info-item strong {
-                color: #000;
-            }
-    </style>
+    <link rel="stylesheet" href="css/compaircar.css" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -136,10 +29,10 @@
                             <asp:HyperLink ID="register" runat="server" NavigateUrl="register.aspx" Text="Register"></asp:HyperLink></li>
                         <li>
                             <asp:Panel ID="profile" runat="server" CssClass="profile-container">
-                                
+
                                 <input type="checkbox" id="toggleProfile" class="toggle-checkbox" />
 
-                                
+
                                 <label for="toggleProfile">
                                     <asp:Image ID="imgProfile" runat="server"
                                         CssClass="profile-pic" Height="39px" />
@@ -149,19 +42,21 @@
                                 <div class="dropdown">
                                     <asp:LinkButton ID="lnkProfile" runat="server" ForeColor="Black">👤 Profile</asp:LinkButton>
                                     <asp:LinkButton ID="lnkadmin" runat="server" ForeColor="Black" Visible="false">⚙️ Admin</asp:LinkButton>
-                                     <asp:LinkButton ID="LinkButton1" runat="server" ForeColor="Black" OnClick="LinkButton1_Click">🚪 Logout</asp:LinkButton>
-                           
+                                    <asp:LinkButton ID="LinkButton1" runat="server" ForeColor="Black" OnClick="LinkButton1_Click">🚪 Logout</asp:LinkButton>
                                 </div>
                             </asp:Panel>
                         </li>
-                                
                     </ul>
                 </nav>
             </div>
         </header>
 
         <main>
+            <div class="compair_btn">
+                <asp:Button ID="Button1" runat="server" CssClass="btn" Text="Compair" OnClick="Button1_Click" />
+            </div>
             <div>
+                <!-- First DataShow -->
                 <center>
                     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CssClass="car-grid" GridLines="None">
                         <Columns>
@@ -173,6 +68,12 @@
                                         <span class="slider-btn prev">&#10094;</span>
                                         <span class="slider-btn next">&#10095;</span>
                                     </div>
+                                    <div class="booked_btn">
+                                        <center>
+                                            <asp:Button ID="bookcar" runat="server" Text="I'm Intrusted" CssClass="btn" />
+                                        </center>
+                                    </div>
+
                                 </ItemTemplate>
                             </asp:TemplateField>
 
@@ -213,6 +114,112 @@
 
                     </asp:GridView>
                 </center>
+                <!-- Show DropDown Form Compair 2 Cars-->
+                <div class="form-group">
+                    <asp:DropDownList ID="compairdrop" runat="server" AutoPostBack="True" Visible="false" OnSelectedIndexChanged="compairdrop_SelectedIndexChanged">
+                    </asp:DropDownList>
+                </div>
+
+                <!-- Use Panel for show compair data show -->
+                <asp:Panel ID="pnlCompare" runat="server" CssClass="compare-panel" Visible="false">
+
+                    <!-- Header -->
+                    <div class="compare-header">
+                        <div class="feature-title">Feature</div>
+                        <div class="feature-title">Selected Car</div>
+                        <div class="feature-title">Compared Car</div>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="compare-row">
+                        <div class="feature-title">Image</div>
+                        <div class="car-value">
+                            <asp:Image ID="imgcar1" runat="server" CssClass="car-image" />
+                        </div>
+                        <div class="car-value">
+                            <asp:Image ID="imgcar2" runat="server" CssClass="car-image" />
+                        </div>
+                    </div>
+
+                    <!-- Brand -->
+                    <div class="compare-row">
+                        <div class="feature-title">Brand</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Brand" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Brand" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                    <!-- Model -->
+                    <div class="compare-row">
+                        <div class="feature-title">Model</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Model" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Model" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                    <!-- Year -->
+                    <div class="compare-row">
+                        <div class="feature-title">Year</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Year" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Year" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                    <!-- Mileage -->
+                    <div class="compare-row">
+                        <div class="feature-title">Mileage</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Mileage" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Mileage" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                    <!-- Fuel Type -->
+                    <div class="compare-row">
+                        <div class="feature-title">Fuel Type</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Fuel" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Fuel" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                    <!-- Transmission -->
+                    <div class="compare-row">
+                        <div class="feature-title">Transmission</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Trans" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Trans" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="compare-row">
+                        <div class="feature-title">Price</div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar1Price" runat="server"></asp:Label>
+                        </div>
+                        <div class="car-value">
+                            <asp:Label ID="lblCar2Price" runat="server"></asp:Label>
+                        </div>
+                    </div>
+
+                </asp:Panel>
+
 
             </div>
         </main>
@@ -265,30 +272,4 @@
         <script src="js/script.js"></script>
     </form>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".image-slider").forEach(slider => {
-            let images = JSON.parse(slider.getAttribute("data-images"))
-                .filter(src => src && src.trim() !== ""); // remove empty/null
-
-            let imgTag = slider.querySelector("img");
-            let index = 0;
-
-            function showImage(i) {
-                imgTag.src = images[i];
-            }
-
-            slider.querySelector(".prev").addEventListener("click", () => {
-                index = (index - 1 + images.length) % images.length;
-                showImage(index);
-            });
-
-            slider.querySelector(".next").addEventListener("click", () => {
-                index = (index + 1) % images.length;
-                showImage(index);
-            });
-        });
-    });
-
-</script>
 </html>

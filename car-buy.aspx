@@ -20,8 +20,35 @@
                     <li><a href="all-cars.aspx">All Cars</a></li>
                     <li><a href="about.aspx">About</a></li>
                     <li><a href="contact.aspx">Contact</a></li>
-                    <li><a href="login.aspx">Login</a></li>
-                    <li><a href="register.aspx">Register</a></li>
+                    <li>
+                        <asp:HyperLink ID="login" runat="server" NavigateUrl="login.aspx" Text="Login"></asp:HyperLink>
+
+                    </li>
+                    <li>
+                        <asp:HyperLink ID="register" runat="server" NavigateUrl="register.aspx" Text="Register"></asp:HyperLink>
+
+                    </li>
+                    <li>
+                        <!-- PROFILE DROPDOWN -->
+
+                        <asp:Panel ID="profile" runat="server" CssClass="profile-container">
+                            <!-- Hidden checkbox for toggle -->
+                            <input type="checkbox" id="toggleProfile" class="toggle-checkbox" />
+
+                            <!-- Label acts as profile button -->
+                            <label for="toggleProfile">
+                                <asp:Image ID="imgProfile" runat="server"
+                                    CssClass="profile-pic" Height="39px" />
+                            </label>
+
+                            <!-- Dropdown -->
+                            <div class="dropdown">
+                                <asp:LinkButton ID="lnkProfile" runat="server" ForeColor="Black" OnClick="lnkProfile_Click">👤 Profile</asp:LinkButton>
+                                <asp:LinkButton ID="lnkadmin" runat="server" ForeColor="Black" Visible="false">⚙️ Admin</asp:LinkButton>
+                                <asp:LinkButton ID="LinkButton1" runat="server" ForeColor="Black" OnClick="LinkButton1_Click">🚪 Logout</asp:LinkButton>
+                            </div>
+                        </asp:Panel>
+                    </li>
                 </ul>
             </nav>
         </div>

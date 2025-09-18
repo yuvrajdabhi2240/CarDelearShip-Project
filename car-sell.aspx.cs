@@ -53,15 +53,7 @@ namespace CarDelearShip_Project.photo
                     profile.Visible = true;
 
                     BindProducts();
-
-                    // fetch image
-                    da = new SqlDataAdapter("select Id,ProfileImage,UserRoll from register where Email = '" + Session["user"] + "'", con);
-                    ds = new DataSet();
-                    da.Fill(ds);
-                    imgProfile.ImageUrl = ds.Tables[0].Rows[0]["ProfileImage"].ToString();
-
-                    userroll = ds.Tables[0].Rows[0]["UserRoll"].ToString();
-
+                    getprofile();
                     if (userroll == "admin")
                     {
                         lnkadmin.Visible = true;
@@ -70,8 +62,23 @@ namespace CarDelearShip_Project.photo
             }
         }
 
+        void getprofile()
+        {
+            da = new SqlDataAdapter("select Id,ProfileImage,UserRoll from register where Email = '" + Session["user"] + "'", con);
+            ds = new DataSet();
+            da.Fill(ds);
+            imgProfile.ImageUrl = ds.Tables[0].Rows[0]["ProfileImage"].ToString();
 
-      
+            userroll = ds.Tables[0].Rows[0]["UserRoll"].ToString();
+
+            if (userroll == "admin")
+            {
+                lnkadmin.Visible = true;
+            }
+        }
+
+
+
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             // Show the next hidden FileUpload
