@@ -53,6 +53,7 @@ namespace CarDelearShip_Project
         }
         void BindProducts()
         {
+            // for filter
            string query = "SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission FROM SellCar WHERE 1=1";
 
             if (Price.SelectedIndex != 0)
@@ -80,8 +81,20 @@ namespace CarDelearShip_Project
             da = new SqlDataAdapter(query, con);
             ds = new DataSet();
             da.Fill(ds);
-            GridView1.DataSource = ds;
-            GridView1.DataBind();
+            
+
+            if (ds.Tables[0].Rows.Count <= 0)
+            {
+                Label1.Visible = true;
+                GridView1.Visible = false;
+            }
+            else 
+            {
+                Label1.Visible = false;
+                GridView1 .Visible = true;
+                GridView1.DataSource = ds;
+                GridView1.DataBind();
+            }
         }
         void getCon() // Connection with database
         {

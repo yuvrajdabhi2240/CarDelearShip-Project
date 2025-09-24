@@ -82,23 +82,6 @@ namespace CarDelearShip_Project.photo
                 lnkadmin.Visible = true;
             }
         }
-
-
-
-        protected void btnAdd_Click(object sender, EventArgs e)
-        {
-            // Show the next hidden FileUpload
-            if (!photo2.Visible) photo2.Visible = true;
-            else if (!photo3.Visible) photo3.Visible = true;
-            else if (!photo4.Visible) photo4.Visible = true;
-            else if (!photo5.Visible) photo5.Visible = true;
-            else
-            {
-                fileuploaderror.Visible = true;
-                fileuploaderror.Text = "Maximum 5 images allowed.";
-            }
-        }
-
         // user added car show
         void BindProducts()
         {
@@ -109,6 +92,15 @@ namespace CarDelearShip_Project.photo
 
             GridView1.DataSource = ds;
             GridView1.DataBind();
+
+            da = new SqlDataAdapter("select * from Brand",con);
+            ds = new DataSet();
+            da.Fill (ds);
+            brand.Items.Insert(0, new ListItem("--- Select Brand ---", ""));
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                brand.Items.Add(ds.Tables[0].Rows[i]["Brand_Name"].ToString());
+            }
         }
         void getCon() // Connection with database
         {

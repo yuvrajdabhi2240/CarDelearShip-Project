@@ -77,9 +77,7 @@
                     <div class="form-group">
                         <label for="brand">Brand *</label>
                         <asp:DropDownList ID="brand" runat="server">
-                            <asp:ListItem Value="--- Select Brand ---"></asp:ListItem>
-                            <asp:ListItem Value="BMW"></asp:ListItem>
-                            <asp:ListItem Value="Maruti Suzuki"></asp:ListItem>
+                            
                         </asp:DropDownList>
 
                     </div>

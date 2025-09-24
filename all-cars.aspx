@@ -176,6 +176,7 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
+                <asp:Label ID="Label1" runat="server" Text="No Such Data Found" Visible="False"></asp:Label>
             </div>
         </main>
         <footer>
