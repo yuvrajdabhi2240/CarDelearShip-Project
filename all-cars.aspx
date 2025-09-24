@@ -113,6 +113,44 @@
             display: contents; /* let .product-card control layout */
             border: none !important;
         }
+        .filter-table {
+      background: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      font-family: Arial, sans-serif;
+      margin-bottom: 20px;
+  }
+
+      .filter-table td {
+          padding: 8px 12px;
+          font-weight: bold;
+          color: #333;
+          font-size: 14px;
+      }
+
+      .filter-table select {
+          padding: 8px 12px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          background: #f9f9f9;
+          font-size: 14px;
+          color: #333;
+          min-width: 150px;
+          cursor: pointer;
+          transition: 0.3s;
+      }
+
+          .filter-table select:hover {
+              border-color: #007BFF;
+              background: #fff;
+          }
+
+          .filter-table select:focus {
+              outline: none;
+              border-color: #007BFF;
+              box-shadow: 0 0 6px rgba(0,123,255,0.4);
+          }
     </style>
 </head>
 <body>
@@ -164,6 +202,37 @@
             </div>
         </header>
         <main>
+            <table border="0" class="filter-table">
+     <tr>
+         <td><h2>Car Filter : </h2></td>
+         <td>
+             <asp:DropDownList ID="Price" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Price_SelectedIndexChanged">
+                 <asp:ListItem Value="--- Select Price Range --- "></asp:ListItem>
+                 <asp:ListItem Value="100000 - 200000"></asp:ListItem>
+                 <asp:ListItem Value="200000 - 500000"></asp:ListItem>
+                 <asp:ListItem Value="500000 - 1000000"></asp:ListItem>
+                 <asp:ListItem Value="1000000 - 2000000"></asp:ListItem>
+             </asp:DropDownList>
+         </td>
+         <td>
+             <asp:DropDownList ID="Transmission" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Transmission_SelectedIndexChanged">
+                 <asp:ListItem Value="--- Select Transmission ---"></asp:ListItem>
+                 <asp:ListItem Value="Automatic"></asp:ListItem>
+                 <asp:ListItem Value="Manually"></asp:ListItem>
+             </asp:DropDownList>
+         </td>
+         <td>
+             <asp:DropDownList ID="fueltype" runat="server" AutoPostBack="True" OnSelectedIndexChanged="fueltype_SelectedIndexChanged">
+                 <asp:ListItem Value="--- Select Fuel Type ---"></asp:ListItem>
+                 <asp:ListItem Value="Petrol"></asp:ListItem>
+                 <asp:ListItem Value="Diesel"></asp:ListItem>
+                 <asp:ListItem Value="Hybrid"></asp:ListItem>
+                 <asp:ListItem Value="Electric"></asp:ListItem>
+                 <asp:ListItem Value="CNG"></asp:ListItem>
+             </asp:DropDownList>
+         </td>
+     </tr>
+ </table>
             <div>
                 <asp:GridView ID="GridView1" runat="server"
                     AutoGenerateColumns="False"

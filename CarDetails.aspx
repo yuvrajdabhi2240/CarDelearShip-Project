@@ -68,11 +68,7 @@
                                         <span class="slider-btn prev">&#10094;</span>
                                         <span class="slider-btn next">&#10095;</span>
                                     </div>
-                                    <div class="booked_btn">
-                                        <center>
-                                            <asp:Button ID="bookcar" runat="server" Text="I'm Intrusted" CssClass="btn" />
-                                        </center>
-                                    </div>
+                                   
 
                                 </ItemTemplate>
                             </asp:TemplateField>

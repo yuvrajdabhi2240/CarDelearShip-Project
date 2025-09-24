@@ -68,10 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="all-cars.aspx" />
-    <Content Include="App_Data\CarDealer.mdf" />
-    <Content Include="App_Data\CarDealer_log.ldf">
-      <DependentUpon>CarDealer.mdf</DependentUpon>
-    </Content>
     <Content Include="car-buy.aspx" />
     <Content Include="CarDetails.aspx" />
     <Content Include="css\compaircar.css" />
