@@ -74,6 +74,7 @@
     </Content>
     <Content Include="car-buy.aspx" />
     <Content Include="CarDetails.aspx" />
+    <Content Include="css\All-Car.css" />
     <Content Include="css\compaircar.css" />
     <Content Include="css\profile.css" />
     <Content Include="css\styles.css" />

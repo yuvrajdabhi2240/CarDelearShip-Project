@@ -125,7 +125,7 @@
                             <div class="profile-actions">
                                 <asp:Button ID="edit" runat="server" CssClass="btn" Text="Edit Profile" OnClick="edit_Click" />
 
-                                <asp:Button ID="save" runat="server" CssClass="btn" Text="Save Profile" Visible="False" />
+                                
                             </div>
                         </form>
                     </div>

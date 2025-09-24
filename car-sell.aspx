@@ -4,11 +4,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sell Your Car - CarDealer</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <link rel="stylesheet" href="css/All-Car.css" />
+    <style>
+        .upload-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            color: #0094ff;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -140,14 +149,28 @@
                         <asp:TextBox ID="Description" runat="server" placeholder="Describe your car's condition, features, and any additional information..."></asp:TextBox>
                     </div>
 
+                    <h2>Upload Photos</h2>
                     <div class="form-group">
-                        <label for="photos">Upload Photos</label>
+                        <label class="upload-label" style="color:#0094ff;">Car Front Image :</label>
                         <asp:FileUpload ID="photo1" CssClass="file-input" runat="server" />
-                        <asp:FileUpload ID="photo2" CssClass="file-input" runat="server" Visible="false" />
-                        <asp:FileUpload ID="photo3" CssClass="file-input" runat="server" Visible="false" />
-                        <asp:FileUpload ID="photo4" CssClass="file-input" runat="server" Visible="false" />
-                        <asp:FileUpload ID="photo5" CssClass="file-input" runat="server" Visible="false" />
-                        <asp:Button ID="btnAdd" runat="server" class="btn" Text="Add More Image" OnClick="btnAdd_Click" />
+
+                        <br />
+                        <label class="upload-label" style="color:#0094ff;">Car Back Image :</label>
+                        <asp:FileUpload ID="photo2" CssClass="file-input" runat="server" />
+
+                        <br />
+                       
+                        <label class="upload-label" style="color:#0094ff;">Car Interior Image :</label>
+                        <asp:FileUpload ID="photo3" CssClass="file-input" runat="server" />
+                        <br />
+                       
+                        <label class="upload-label" style="color:#0094ff;">Car Left Side Image :</label>
+                        <asp:FileUpload ID="photo4" CssClass="file-input" runat="server" />
+                        <br />
+
+                        <label class="upload-label" style="color:#0094ff;">Car Right Side Image :</label>
+                        <asp:FileUpload ID="photo5" CssClass="file-input" runat="server" />
+
                         <asp:Label ID="fileuploaderror" runat="server" Visible="False" ForeColor="Red"></asp:Label>
                         <small>You can upload multiple photos. Maximum 5 images.</small>
                     </div>

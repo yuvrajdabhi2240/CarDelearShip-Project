@@ -49,16 +49,37 @@ namespace CarDelearShip_Project
                         lnkadmin.Visible = true;
                     }
                 }
-
             }
         }
         void BindProducts()
         {
-            SqlDataAdapter da = new SqlDataAdapter("SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission FROM SellCar ", con);
+           string query = "SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission FROM SellCar WHERE 1=1";
 
-            DataSet ds = new DataSet();
+            if (Price.SelectedIndex != 0)
+            {
+                string[] range = Price.SelectedValue.Split('-');
+                int minPrice = int.Parse(range[0].Trim());
+                int maxPrice = int.Parse(range[1].Trim());
+
+                query += $" AND Price BETWEEN {minPrice} AND {maxPrice}";
+            }
+
+
+            if (fueltype.SelectedIndex != 0)
+            {
+                query += " AND FuelType = '" + fueltype.SelectedValue + "'";
+            }
+
+
+            if (Transmission.SelectedIndex != 0)
+            {
+                query += " AND Transmission = '" + Transmission.SelectedValue + "'";
+            }
+
+            getCon();
+            da = new SqlDataAdapter(query, con);
+            ds = new DataSet();
             da.Fill(ds);
-
             GridView1.DataSource = ds;
             GridView1.DataBind();
         }
@@ -79,18 +100,33 @@ namespace CarDelearShip_Project
             }
         }
 
-       
-        
+
+
 
         protected void lnkProfile_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
             Session.Abandon();  // Clear session
             Response.Write("<script>alert('LogOut Successfully');window.location='Login.aspx';</script>");
+        }
+
+        protected void Price_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindProducts();
+        }
+
+        protected void Transmission_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindProducts();
+        }
+
+        protected void fueltype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindProducts();
         }
     }
 }

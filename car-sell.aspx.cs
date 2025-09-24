@@ -33,6 +33,12 @@ namespace CarDelearShip_Project.photo
         //store images ...
         string img1, img2, img3, img4, img5;
         int carid;
+
+        bool isimage1 = false;
+        bool isimage2 = false;
+        bool isimage3 = false;
+        bool isimage4 = false;
+        bool isimage5 = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -114,9 +120,10 @@ namespace CarDelearShip_Project.photo
         void select()
         {
             getCon();
-            da = new SqlDataAdapter("select Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description from SellCar where Id = '" + carid + "'", con);
+            da = new SqlDataAdapter("select Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description from SellCar where Id = '" + ViewState["carid"] + "'", con);
             ds = new DataSet();
             da.Fill(ds);
+
 
             brand.SelectedValue = ds.Tables[0].Rows[0]["Brand"].ToString();
             model.Text = ds.Tables[0].Rows[0]["Model"].ToString();
@@ -141,7 +148,7 @@ namespace CarDelearShip_Project.photo
             {
                 int rowIndex = Convert.ToInt32(e.CommandArgument);
                 carid = Convert.ToInt32(GridView1.DataKeys[rowIndex].Value);
-
+                ViewState["carid"] = carid;   // store in ViewState
                 select();
                 Button1.Text = "Save Edit Data";
             }
@@ -163,7 +170,7 @@ namespace CarDelearShip_Project.photo
         {
 
         }
-       
+
         void clear() // After submit the form clear the data
         {
             model.Text = "";
@@ -180,9 +187,11 @@ namespace CarDelearShip_Project.photo
                 {
                     img1 = "photo/SellCar/" + photo1.FileName;
                     photo1.SaveAs(Server.MapPath(img1));
+                    isimage1 = true;
                 }
                 else
                 {
+                    isimage1 = false;
                     Response.Write("<script>alert('Only JPG, JPEG, PNG, GIF files are allowed!');</script>");
                 }
             }
@@ -194,9 +203,11 @@ namespace CarDelearShip_Project.photo
                 {
                     img2 = "photo/SellCar/" + photo2.FileName;
                     photo2.SaveAs(Server.MapPath(img2));
+                    isimage2 = true;
                 }
                 else
                 {
+                    isimage2 = false;
                     Response.Write("<script>alert('Only JPG, JPEG, PNG, GIF files are allowed!');</script>");
                 }
             }
@@ -208,9 +219,11 @@ namespace CarDelearShip_Project.photo
                 {
                     img3 = "photo/SellCar/" + photo3.FileName;
                     photo3.SaveAs(Server.MapPath(img3));
+                    isimage3 = true;
                 }
                 else
                 {
+                    isimage3 = false;
                     Response.Write("<script>alert('Only JPG, JPEG, PNG, GIF files are allowed!');</script>");
                 }
             }
@@ -222,9 +235,11 @@ namespace CarDelearShip_Project.photo
                 {
                     img4 = "photo/SellCar/" + photo4.FileName;
                     photo4.SaveAs(Server.MapPath(img4));
+                    isimage4 = true;
                 }
                 else
                 {
+                    isimage4 = false;
                     Response.Write("<script>alert('Only JPG, JPEG, PNG, GIF files are allowed!');</script>");
                 }
             }
@@ -236,9 +251,11 @@ namespace CarDelearShip_Project.photo
                 {
                     img5 = "photo/SellCar/" + photo5.FileName;
                     photo5.SaveAs(Server.MapPath(img5));
+                    isimage5 = true;
                 }
                 else
                 {
+                    isimage5 = false;
                     Response.Write("<script>alert('Only JPG, JPEG, PNG, GIF files are allowed!');</script>");
                 }
             }
@@ -246,42 +263,48 @@ namespace CarDelearShip_Project.photo
 
         protected void Button1_Click1(object sender, EventArgs e)
         {
-            if (Button1.Text == "Submit Listing")
+            if (isimage1 == true && isimage2 == true && isimage3 == true && isimage4 == true && isimage5 == true)
             {
-                if (Session["user"] != null)
+                if (Button1.Text == "Submit Listing")
                 {
-                    getCon();
 
-                    da = new SqlDataAdapter("select * from register where Email = '" + Session["user"] + "'", con);
-                    ds = new DataSet();
-                    da.Fill(ds);
+                    if (Session["user"] != null)
+                    {
+                        getCon();
 
-                    userid = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
-                    holdername = ds.Tables[0].Rows[0]["Username"].ToString();
-                    holderemail = ds.Tables[0].Rows[0]["Email"].ToString();
-                    holderphone = ds.Tables[0].Rows[0]["Phone"].ToString();
-                    holdercountry = ds.Tables[0].Rows[0]["Country"].ToString();
-                    holderstate = ds.Tables[0].Rows[0]["State"].ToString();
-                    holdercity = ds.Tables[0].Rows[0]["City"].ToString();
-                    imageupload();
+                        da = new SqlDataAdapter("select * from register where Email = '" + Session["user"] + "'", con);
+                        ds = new DataSet();
+                        da.Fill(ds);
 
-                    //insert Car queary
-                    cmd = new SqlCommand("insert into SellCar (Userid,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,HolderCountry,HolderState,HolderCity,image1,image2,image3,image4,image5) values('" + userid + "','" + brand.Text + "','" + model.Text + "','" + year.Text + "','" + mileage.Text + "','" + fueltype.Text + "','" + transmission.Text + "','" + price.Text + "','" + Description.Text + "','" + holdername + "','" + holderemail + "','" + holderphone + "','" + holdercountry + "','" + holderstate + "','" + holdercity + "','" + img1 + "','" + img2 + "','" + img3 + "','" + img4 + "','" + img5 + "')", con);
-                    cmd.ExecuteNonQuery();
-                    clear();
-                    Response.Write("<script>alert('Car Add Successfully...');window.location='car-sell.aspx';</script>");
+                        userid = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
+                        holdername = ds.Tables[0].Rows[0]["Username"].ToString();
+                        holderemail = ds.Tables[0].Rows[0]["Email"].ToString();
+                        holderphone = ds.Tables[0].Rows[0]["Phone"].ToString();
+                        holdercountry = ds.Tables[0].Rows[0]["Country"].ToString();
+                        holderstate = ds.Tables[0].Rows[0]["State"].ToString();
+                        holdercity = ds.Tables[0].Rows[0]["City"].ToString();
+                        imageupload();
+
+                        //insert Car queary
+                        cmd = new SqlCommand("insert into SellCar (Userid,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,HolderCountry,HolderState,HolderCity,image1,image2,image3,image4,image5) values('" + userid + "','" + brand.Text + "','" + model.Text + "','" + year.Text + "','" + mileage.Text + "','" + fueltype.Text + "','" + transmission.Text + "','" + price.Text + "','" + Description.Text + "','" + holdername + "','" + holderemail + "','" + holderphone + "','" + holdercountry + "','" + holderstate + "','" + holdercity + "','" + img1 + "','" + img2 + "','" + img3 + "','" + img4 + "','" + img5 + "')", con);
+                        cmd.ExecuteNonQuery();
+                        clear();
+                        Response.Write("<script>alert('Car Add Successfully...');window.location='car-sell.aspx';</script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Something Went Wrong !!!');</script>");
+                    }
                 }
                 else
                 {
-                    Response.Write("<script>alert('Something Went Wrong !!!');</script>");
+                    getCon();
+
+                    cmd = new SqlCommand("update SellCar SET Brand = '" + brand.SelectedValue + "',Model='" + model.Text + "',Year = '" + year.SelectedValue + "',Mileage='" + mileage.Text + "',FuelType = '" + fueltype.SelectedValue + "',Transmission = '" + transmission.SelectedValue + "',Price = '" + price.Text + "',Description='" + Description.Text + "' WHERE Id = '" + ViewState["carid"] + "'", con);
+                    cmd.ExecuteNonQuery();
+                    clear();
+                    Response.Write("<script>alert('Car updated successfully!');</script>");
                 }
-            }
-            else 
-            {
-                getCon();
-                cmd = new SqlCommand("update SellCar SET Brand = '" + brand.SelectedValue + "',Model='" + model.Text + "',Year = '" + year.SelectedValue + "',Mileage='" + mileage.Text + "',FuelType = '" + fueltype.SelectedValue + "',Transmission = '" + transmission.SelectedValue + "',Price = '" + price.Text + "',Description='" + Description.Text + "' WHERE Id = '" + carid + "'", con);
-                cmd.ExecuteNonQuery();
-                clear();
             }
         }
     }

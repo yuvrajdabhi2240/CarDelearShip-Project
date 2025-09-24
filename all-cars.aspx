@@ -5,8 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <link rel="stylesheet" href="css/All-Car.css" />
+
     <style>
         .file-input {
             display: block;
@@ -15,104 +17,44 @@
             max-width: 400px;
         }
 
-        /* Main grid layout */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 per row */
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        /* Individual product card */
-        .product-card {
+        .filter-table {
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.2s ease;
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
         }
 
-            .product-card:hover {
-                transform: translateY(-5px);
+            .filter-table td {
+                padding: 8px 12px;
+                font-weight: bold;
+                color: #333;
+                font-size: 14px;
             }
 
-        /* Image styling */
-        .product-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        /* Body */
-        .product-body {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .product-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 8px 0;
-        }
-
-        .product-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2a2afc;
-            margin: 5px 0;
-        }
-
-        .product-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin: 5px 0;
-        }
-
-        /* Button */
-        .btn-viewmore {
-            display: inline-block;
-            background: #2a2afc;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            margin-top: 10px;
-            font-size: 14px;
-            transition: background 0.3s ease;
-        }
-
-            .btn-viewmore:hover {
-                background: #1e1ed1;
+            .filter-table select {
+                padding: 8px 12px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                background: #f9f9f9;
+                font-size: 14px;
+                color: #333;
+                min-width: 150px;
+                cursor: pointer;
+                transition: 0.3s;
             }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+                .filter-table select:hover {
+                    border-color: #007BFF;
+                    background: #fff;
+                }
 
-        @media (max-width: 600px) {
-            .product-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Apply grid layout to GridView table rows */
-        .product-grid > tbody {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 per row */
-            gap: 20px;
-        }
-
-        /* Remove default table formatting */
-        .product-grid,
-        .product-grid tr,
-        .product-grid td {
-            display: contents; /* let .product-card control layout */
-            border: none !important;
-        }
+                .filter-table select:focus {
+                    outline: none;
+                    border-color: #007BFF;
+                    box-shadow: 0 0 6px rgba(0,123,255,0.4);
+                }
     </style>
 </head>
 <body>
@@ -164,6 +106,37 @@
             </div>
         </header>
         <main>
+            <table border="0" class="filter-table">
+                <tr>
+                    <td><h2>Car Filter : </h2></td>
+                    <td>
+                        <asp:DropDownList ID="Price" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Price_SelectedIndexChanged">
+                            <asp:ListItem Value="--- Select Price Range --- "></asp:ListItem>
+                            <asp:ListItem Value="100000 - 200000"></asp:ListItem>
+                            <asp:ListItem Value="200000 - 500000"></asp:ListItem>
+                            <asp:ListItem Value="500000 - 1000000"></asp:ListItem>
+                            <asp:ListItem Value="1000000 - 2000000"></asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="Transmission" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Transmission_SelectedIndexChanged">
+                            <asp:ListItem Value="--- Select Transmission ---"></asp:ListItem>
+                            <asp:ListItem Value="Automatic"></asp:ListItem>
+                            <asp:ListItem Value="Manually"></asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="fueltype" runat="server" AutoPostBack="True" OnSelectedIndexChanged="fueltype_SelectedIndexChanged">
+                            <asp:ListItem Value="--- Select Fuel Type ---"></asp:ListItem>
+                            <asp:ListItem Value="Petrol"></asp:ListItem>
+                            <asp:ListItem Value="Diesel"></asp:ListItem>
+                            <asp:ListItem Value="Hybrid"></asp:ListItem>
+                            <asp:ListItem Value="Electric"></asp:ListItem>
+                            <asp:ListItem Value="CNG"></asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
             <div>
                 <asp:GridView ID="GridView1" runat="server"
                     AutoGenerateColumns="False"

@@ -18,7 +18,7 @@ namespace CarDelearShip_Project
         SqlDataAdapter da;
         DataSet ds;
         SqlCommand cmd;
-        
+
         string userroll;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -26,7 +26,7 @@ namespace CarDelearShip_Project
             if (!IsPostBack)
             {
                 getCon();
-               
+
                 fillcountry();
                 if (Session["user"] == null)
                 {
@@ -104,7 +104,7 @@ namespace CarDelearShip_Project
             citys.Visible = false;
 
             getCon();
-            da = new SqlDataAdapter("select Id,Username,Email,Phone,(select CountryName from Country where Country.Id = register.Country)as CountryName,(Select StateName from State where State.Id = Register.State) AS StateName,(Select CityName from City where City.Id = Register.City) AS CityName,ProfileImage,UserRoll from register where Email = '" + Session["user"] + "'", con);
+            da = new SqlDataAdapter("select r.Id, r.Username, r.Email, r.Phone, r.Country as CountryId, (select CountryName from Country where Country.Id = r.Country) as CountryName,r.State as StateId, (select StateName from State where State.Id = r.State) as StateName,\r\n       r.City as CityId,(select CityName from City where City.Id = r.City) as CityName,r.ProfileImage, r.UserRoll from Register r where r.Email = '" + Session["user"] + "'", con);
             ds = new DataSet();
             da.Fill(ds);
             imgProfile.ImageUrl = ds.Tables[0].Rows[0]["ProfileImage"].ToString();
@@ -114,11 +114,46 @@ namespace CarDelearShip_Project
             username.Text = ds.Tables[0].Rows[0]["Username"].ToString();
             emailProfile.Text = ds.Tables[0].Rows[0]["Email"].ToString();
             phone.Text = ds.Tables[0].Rows[0]["Phone"].ToString();
-            country.SelectedValue = ds.Tables[0].Rows[0]["CountryName"].ToString();
-            state.SelectedValue = ds.Tables[0].Rows[0]["StateName"].ToString();
-            city.SelectedValue = ds.Tables[0].Rows[0]["CityName"].ToString();
-            
+            ////country.SelectedValue = ds.Tables[0].Rows[0]["CountryId"].ToString();
+            //country.SelectedValue = ds.Tables[0].Rows[0]["Country"].ToString();
+            //ViewState["countryid"] = country.SelectedValue;
+            //fillstate();
 
+            //state.SelectedValue = ds.Tables[0].Rows[0]["State"].ToString();
+            //ViewState["stateid"] = state.SelectedValue;
+            //fillcity();
+
+            //city.SelectedValue = ds.Tables[0].Rows[0]["City"].ToString();
+            edit.Text = "Save Changes";
+
+            if (edit.Text == "Save Changes")
+            {
+                updateprofile();
+            }
+        }
+        void updateprofile()
+        {
+            getCon();
+            cmd = new SqlCommand("UPDATE register SET Username = '" + username.Text + "',Email = '" + emailProfile.Text + "',Phone = '" + phone.Text + "',Country = '" + country.SelectedValue + "',State = '" + state.SelectedValue + "',City = '" + city.SelectedValue + "' WHERE Email = '" + Session["user"] + "'", con);
+            cmd.ExecuteNonQuery();
+
+            //show text box and all 
+            username.Visible = false;
+            emailProfile.Visible = false;
+            phone.Visible = false;
+            country.Visible = false;
+            state.Visible = false;
+            city.Visible = false;
+
+            //remove labels or visiable false
+            name.Visible = true;
+            email.Visible = true;
+            phonenumber.Visible = true;
+            countryes.Visible = true;
+            states.Visible = true;
+            citys.Visible = true;
+
+            edit.Text = "Edit Profile";
         }
         //fetch Country
         void fillcountry()
@@ -127,69 +162,73 @@ namespace CarDelearShip_Project
             da = new SqlDataAdapter("SELECT * from Country", con);
             ds = new DataSet();
             da.Fill(ds);
+
             country.Items.Insert(0, new ListItem("--- Select Country ---", "0"));
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                country.Items.Add(ds.Tables[0].Rows[i][1].ToString());
+                country.Items.Add(new ListItem(ds.Tables[0].Rows[i]["CountryName"].ToString(), ds.Tables[0].Rows[i]["Id"].ToString()));
             }
-
+            state.Items.Clear();
+            state.Items.Insert(0, new ListItem("--- Select State ---", "0"));
+            city.Items.Clear();
+            city.Items.Insert(0, new ListItem("--- Select City ---", "0"));
         }
         void fillstate()
         {
-            getCon();
-            
-            da = new SqlDataAdapter("SELECT * from State where Country_id = '(SELECT Id FROM Country where CountryName = '" + country.SelectedValue +"')'", con);
-            ds = new DataSet();
-            da.Fill(ds);
-            state.Items.Insert(0, new ListItem("--- Select Country ---", "0"));
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            if (ViewState["countryid"] != null)
             {
-                state.Items.Add(ds.Tables[0].Rows[i][1].ToString());
+                getCon();
+                da = new SqlDataAdapter("SELECT * from State where Country_id = '" + ViewState["countryid"] + "'", con);
+                ds = new DataSet();
+                da.Fill(ds);
+
+                state.Items.Clear();
+                state.Items.Insert(0, new ListItem("--- Select State ---", "0"));
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    state.Items.Add(new ListItem(ds.Tables[0].Rows[i]["StateName"].ToString(),
+                                                 ds.Tables[0].Rows[i]["Id"].ToString()));
+                }
+
+                city.Items.Clear();
+                city.Items.Insert(0, new ListItem("--- Select City ---", "0"));
+            }
+        }
+        void fillcity()
+        {
+            if (ViewState["stateid"] != null)
+            {
+                getCon();
+                da = new SqlDataAdapter("SELECT * from City where StateId = '" + ViewState["stateid"] + "'", con);
+                ds = new DataSet();
+                da.Fill(ds);
+
+                city.Items.Clear();
+                city.Items.Insert(0, new ListItem("--- Select City ---", "0"));
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    city.Items.Add(new ListItem(ds.Tables[0].Rows[i]["CityName"].ToString(),
+                                                ds.Tables[0].Rows[i]["Id"].ToString()));
+                }
             }
         }
         protected void country_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            state.Items.Clear();
-            city.Items.Clear();
-            getCon();
-            da = new SqlDataAdapter("SELECT * FROM Country where CountryName = '" + country.SelectedValue + "'", con);
-            ds = new DataSet();
-            da.Fill(ds);
-            ViewState["countryid"] = Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
-
-
-           fillstate();
-
+            ViewState["countryid"] = country.SelectedValue;
+            fillstate();
         }
 
         protected void state_SelectedIndexChanged(object sender, EventArgs e)
         {
-            city.Items.Clear();
-            getCon();
-
-            da = new SqlDataAdapter("select * from State where StateName = '" + state.SelectedValue + "'", con);
-            ds = new DataSet();
-            da.Fill(ds);
-            ViewState["stateid"] = Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
-
-            da = new SqlDataAdapter("select * from city where StateId = '" + ViewState["stateid"] + "'", con);
-            ds = new DataSet();
-            da.Fill(ds);
-            city.Items.Insert(0, new ListItem("--- Select City ---", "0"));
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-            {
-                city.Items.Add(ds.Tables[0].Rows[i][1].ToString());
-            }
-
+            ViewState["stateid"] = state.SelectedValue;
+            fillcity();
         }
 
         protected void city_SelectedIndexChanged(object sender, EventArgs e)
         {
-            da = new SqlDataAdapter("select * from City where CityName = '" + city.SelectedValue + "'", con);
-            ds = new DataSet();
-            da.Fill(ds);
-            ViewState["cityid"] = Convert.ToInt32(ds.Tables[0].Rows[0][0].ToString());
+            ViewState["cityid"] = city.SelectedValue;
         }
     }
 }

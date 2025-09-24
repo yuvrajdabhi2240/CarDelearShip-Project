@@ -68,11 +68,7 @@
                                         <span class="slider-btn prev">&#10094;</span>
                                         <span class="slider-btn next">&#10095;</span>
                                     </div>
-                                    <div class="booked_btn">
-                                        <center>
-                                            <asp:Button ID="bookcar" runat="server" Text="I'm Intrusted" CssClass="btn" />
-                                        </center>
-                                    </div>
+
 
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -272,4 +268,30 @@
         <script src="js/script.js"></script>
     </form>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".image-slider").forEach(function (slider) {
+            const images = JSON.parse(slider.getAttribute("data-images"));
+            const imgTag = slider.querySelector("img");
+            let currentIndex = 0;
+
+            const prevBtn = slider.querySelector(".prev");
+            const nextBtn = slider.querySelector(".next");
+
+            function showImage(index) {
+                imgTag.src = images[index];
+            }
+
+            prevBtn.addEventListener("click", function () {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            });
+
+            nextBtn.addEventListener("click", function () {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            });
+        });
+    });
+</script>
 </html>
