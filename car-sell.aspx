@@ -17,6 +17,10 @@
             display: block;
             color: #0094ff;
         }
+
+        .btn-space {
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -77,7 +81,6 @@
                     <div class="form-group">
                         <label for="brand">Brand *</label>
                         <asp:DropDownList ID="brand" runat="server">
-                            
                         </asp:DropDownList>
 
                     </div>
@@ -149,24 +152,24 @@
 
                     <h2>Upload Photos</h2>
                     <div class="form-group">
-                        <label class="upload-label" style="color:#0094ff;">Car Front Image :</label>
+                        <label class="upload-label" style="color: #0094ff;">Car Front Image :</label>
                         <asp:FileUpload ID="photo1" CssClass="file-input" runat="server" />
 
                         <br />
-                        <label class="upload-label" style="color:#0094ff;">Car Back Image :</label>
+                        <label class="upload-label" style="color: #0094ff;">Car Back Image :</label>
                         <asp:FileUpload ID="photo2" CssClass="file-input" runat="server" />
 
                         <br />
-                       
-                        <label class="upload-label" style="color:#0094ff;">Car Interior Image :</label>
+
+                        <label class="upload-label" style="color: #0094ff;">Car Interior Image :</label>
                         <asp:FileUpload ID="photo3" CssClass="file-input" runat="server" />
                         <br />
-                       
-                        <label class="upload-label" style="color:#0094ff;">Car Left Side Image :</label>
+
+                        <label class="upload-label" style="color: #0094ff;">Car Left Side Image :</label>
                         <asp:FileUpload ID="photo4" CssClass="file-input" runat="server" />
                         <br />
 
-                        <label class="upload-label" style="color:#0094ff;">Car Right Side Image :</label>
+                        <label class="upload-label" style="color: #0094ff;">Car Right Side Image :</label>
                         <asp:FileUpload ID="photo5" CssClass="file-input" runat="server" />
 
                         <asp:Label ID="fileuploaderror" runat="server" Visible="False" ForeColor="Red"></asp:Label>
@@ -192,7 +195,7 @@
                 GridLines="None"
                 ShowHeader="False"
                 DataKeyNames="id"
-                OnRowCommand="GridView1_RowCommand" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowEditing="GridView1_RowEditing">
+                OnRowCommand="GridView1_RowCommand" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowEditing="GridView1_RowEditing" OnRowDeleting="GridView1_RowDeleting">
                 <Columns>
                     <asp:TemplateField>
                         <ItemTemplate>
@@ -226,6 +229,14 @@
                                         CommandName="edit"
                                         CommandArgument='<%# Container.DataItemIndex %>'
                                         CssClass="btn" />
+
+                                    <center>
+                                        <asp:Button ID="Button3" runat="server"
+                                            Text="Delete Car"
+                                            CommandName="delete"
+                                            CommandArgument='<%# Container.DataItemIndex %>'
+                                            CssClass="btn btn-space" />
+                                    </center>
                                 </div>
                             </div>
                         </ItemTemplate>

@@ -144,9 +144,23 @@ namespace CarDelearShip_Project.photo
                 select();
                 Button1.Text = "Save Edit Data";
             }
+            else if (e.CommandName == "delete")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                carid = Convert.ToInt32(GridView1.DataKeys[rowIndex].Value);
+                ViewState["carid"] = carid;   // store in ViewState
+                deletecar();
+                Response.Write("<script>alert('Delete Car Successfully');</script>");
+                BindProducts();
+            }
 
         }
-
+        void deletecar()
+        {
+            getCon();
+            cmd = new SqlCommand("DELETE FROM SellCar where Id = '" + ViewState["carid"] +"'",con);
+            cmd.ExecuteNonQuery();
+        }
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -156,6 +170,11 @@ namespace CarDelearShip_Project.photo
         {
             Session.Abandon();  // Clear session
             Response.Write("<script>alert('LogOut Successfully');window.location='Login.aspx';</script>");
+        }
+
+        protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+
         }
 
         protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)

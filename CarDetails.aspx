@@ -68,8 +68,6 @@
                                         <span class="slider-btn prev">&#10094;</span>
                                         <span class="slider-btn next">&#10095;</span>
                                     </div>
-
-
                                 </ItemTemplate>
                             </asp:TemplateField>
 

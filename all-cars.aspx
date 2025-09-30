@@ -135,6 +135,9 @@
                             <asp:ListItem Value="CNG"></asp:ListItem>
                         </asp:DropDownList>
                     </td>
+                    <td>
+                        <asp:DropDownList ID="brand" runat="server" AutoPostBack="True" OnSelectedIndexChanged="brand_SelectedIndexChanged"></asp:DropDownList>
+                    </td>
                 </tr>
             </table>
             <div>
