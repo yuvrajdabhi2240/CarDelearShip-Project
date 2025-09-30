@@ -53,8 +53,21 @@ namespace CarDelearShip_Project
         }
         void BindProducts()
         {
+            getCon();
+            // add brand
+            if (!IsPostBack)
+            {
+                da = new SqlDataAdapter("select * from Brand", con);
+                ds = new DataSet();
+                da.Fill(ds);
+                brand.Items.Insert(0, new ListItem("--- Select Brand ---", ""));
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    brand.Items.Add(ds.Tables[0].Rows[i]["Brand_Name"].ToString());
+                }
+            }
             // for filter
-           string query = "SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission FROM SellCar WHERE 1=1";
+            string query = "SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission FROM SellCar WHERE 1=1";
 
             if (Price.SelectedIndex != 0)
             {
@@ -71,18 +84,22 @@ namespace CarDelearShip_Project
                 query += " AND FuelType = '" + fueltype.SelectedValue + "'";
             }
 
+            if (brand.SelectedIndex != 0)
+            {
+                query += " AND Brand = '"+brand.SelectedValue+"'";
+            }
 
             if (Transmission.SelectedIndex != 0)
             {
                 query += " AND Transmission = '" + Transmission.SelectedValue + "'";
             }
 
-            getCon();
+            //  for filter dataset
             da = new SqlDataAdapter(query, con);
             ds = new DataSet();
             da.Fill(ds);
             
-
+            // check there ds is empty or not 
             if (ds.Tables[0].Rows.Count <= 0)
             {
                 Label1.Visible = true;
@@ -140,6 +157,12 @@ namespace CarDelearShip_Project
         protected void fueltype_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindProducts();
+        }
+
+        protected void brand_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindProducts();
+
         }
     }
 }
