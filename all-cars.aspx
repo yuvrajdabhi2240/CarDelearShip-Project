@@ -55,6 +55,10 @@
                     border-color: #007BFF;
                     box-shadow: 0 0 6px rgba(0,123,255,0.4);
                 }
+
+        .hearth {
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -108,10 +112,12 @@
         <main>
             <table border="0" class="filter-table">
                 <tr>
-                    <td><h2>Car Filter : </h2></td>
+                    <td>
+                        <h2>Car Filter : </h2>
+                    </td>
                     <td>
                         <asp:DropDownList ID="Price" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Price_SelectedIndexChanged">
-                            <asp:ListItem Value="--- Select Price Range --- "></asp:ListItem>
+                            <asp:ListItem Value=" Select Price Range "></asp:ListItem>
                             <asp:ListItem Value="100000 - 200000"></asp:ListItem>
                             <asp:ListItem Value="200000 - 500000"></asp:ListItem>
                             <asp:ListItem Value="500000 - 1000000"></asp:ListItem>
@@ -120,14 +126,14 @@
                     </td>
                     <td>
                         <asp:DropDownList ID="Transmission" runat="server" AutoPostBack="True" OnSelectedIndexChanged="Transmission_SelectedIndexChanged">
-                            <asp:ListItem Value="--- Select Transmission ---"></asp:ListItem>
+                            <asp:ListItem Value=" Select Transmission "></asp:ListItem>
                             <asp:ListItem Value="Automatic"></asp:ListItem>
-                            <asp:ListItem Value="Manually"></asp:ListItem>
+                            <asp:ListItem Value="Manual"></asp:ListItem>
                         </asp:DropDownList>
                     </td>
                     <td>
                         <asp:DropDownList ID="fueltype" runat="server" AutoPostBack="True" OnSelectedIndexChanged="fueltype_SelectedIndexChanged">
-                            <asp:ListItem Value="--- Select Fuel Type ---"></asp:ListItem>
+                            <asp:ListItem Value=" Select Fuel Type "></asp:ListItem>
                             <asp:ListItem Value="Petrol"></asp:ListItem>
                             <asp:ListItem Value="Diesel"></asp:ListItem>
                             <asp:ListItem Value="Hybrid"></asp:ListItem>
@@ -137,6 +143,13 @@
                     </td>
                     <td>
                         <asp:DropDownList ID="brand" runat="server" AutoPostBack="True" OnSelectedIndexChanged="brand_SelectedIndexChanged"></asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="favorite" runat="server" AutoPostBack="True" OnSelectedIndexChanged="favorite_SelectedIndexChanged">
+                            <asp:ListItem Value=" Select Favorite "></asp:ListItem>
+                            <asp:ListItem Value="Favorite"></asp:ListItem>
+                            <asp:ListItem Value="All Car"></asp:ListItem>
+                        </asp:DropDownList>
                     </td>
                 </tr>
             </table>
@@ -173,6 +186,10 @@
                                             CommandName="ViewMore"
                                             CommandArgument='<%# Container.DataItemIndex %>'
                                             CssClass="btn" />
+
+                                        <asp:Button ID="favorite" runat="server" CssClass="btn hearth" Text='<%# Convert.ToInt32(Eval("IsFavorite")) == 1 ? "Remove ♥" : "Add To ♡" %>' CommandName="favorite" CommandArgument='<%# Container.DataItemIndex %>' ForeColor='<%# Convert.ToInt32(Eval("IsFavorite")) == 1 ? System.Drawing.Color.Red : System.Drawing.Color.Black %>' />
+
+
                                     </div>
                                 </div>
                             </ItemTemplate>
@@ -234,4 +251,6 @@
         <script src="js/script.js"></script>
     </form>
 </body>
+
+
 </html>

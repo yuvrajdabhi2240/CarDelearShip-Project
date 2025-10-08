@@ -114,14 +114,14 @@ namespace CarDelearShip_Project
             username.Text = ds.Tables[0].Rows[0]["Username"].ToString();
             emailProfile.Text = ds.Tables[0].Rows[0]["Email"].ToString();
             phone.Text = ds.Tables[0].Rows[0]["Phone"].ToString();
-            ////country.SelectedValue = ds.Tables[0].Rows[0]["CountryId"].ToString();
-            //country.SelectedValue = ds.Tables[0].Rows[0]["Country"].ToString();
-            //ViewState["countryid"] = country.SelectedValue;
-            //fillstate();
+            //country.SelectedValue = ds.Tables[0].Rows[0]["CountryId"].ToString();
+            country.SelectedValue = ds.Tables[0].Rows[0]["Country"].ToString();
+            ViewState["countryid"] = country.SelectedValue;
+            fillstate();
 
-            //state.SelectedValue = ds.Tables[0].Rows[0]["State"].ToString();
-            //ViewState["stateid"] = state.SelectedValue;
-            //fillcity();
+            state.SelectedValue = ds.Tables[0].Rows[0]["State"].ToString();
+            ViewState["stateid"] = state.SelectedValue;
+            fillcity();
 
             //city.SelectedValue = ds.Tables[0].Rows[0]["City"].ToString();
             edit.Text = "Save Changes";

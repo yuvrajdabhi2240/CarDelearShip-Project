@@ -29,9 +29,16 @@ namespace CarDelearShip_Project
                     Response.Write("<script>alert('Please login than you able to see all pages');window.location='Login.aspx';</script>");
                     login.Visible = true;
                     register.Visible = true;
+
+                    
                 }
                 else
                 {
+                    da = new SqlDataAdapter("select Id from register where Email = '" + Session["user"] + "'", con);
+                    ds = new DataSet();
+                    da.Fill(ds);
+                    ViewState["userid"] = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
+
                     BindProducts();
                     login.Visible = false;
                     register.Visible = false;
@@ -54,20 +61,21 @@ namespace CarDelearShip_Project
         void BindProducts()
         {
             getCon();
+            
             // add brand
             if (!IsPostBack)
             {
                 da = new SqlDataAdapter("select * from Brand", con);
                 ds = new DataSet();
                 da.Fill(ds);
-                brand.Items.Insert(0, new ListItem("--- Select Brand ---", ""));
+                brand.Items.Insert(0, new ListItem(" Select Brand ", ""));
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     brand.Items.Add(ds.Tables[0].Rows[i]["Brand_Name"].ToString());
                 }
             }
             // for filter
-            string query = "SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission FROM SellCar WHERE 1=1";
+            string query = "SELECT Id, Brand, Image1, Price, Year, Mileage, FuelType, Transmission,CASE WHEN EXISTS (SELECT 1 FROM favorite WHERE favorite.carid = SellCar.Id AND favorite.userid = '" + ViewState["userid"] + "') THEN 1 ELSE 0 END AS IsFavorite FROM SellCar WHERE 1=1";
 
             if (Price.SelectedIndex != 0)
             {
@@ -78,7 +86,6 @@ namespace CarDelearShip_Project
                 query += $" AND Price BETWEEN {minPrice} AND {maxPrice}";
             }
 
-
             if (fueltype.SelectedIndex != 0)
             {
                 query += " AND FuelType = '" + fueltype.SelectedValue + "'";
@@ -86,7 +93,7 @@ namespace CarDelearShip_Project
 
             if (brand.SelectedIndex != 0)
             {
-                query += " AND Brand = '"+brand.SelectedValue+"'";
+                query += " AND Brand = '" + brand.SelectedValue + "'";
             }
 
             if (Transmission.SelectedIndex != 0)
@@ -94,21 +101,26 @@ namespace CarDelearShip_Project
                 query += " AND Transmission = '" + Transmission.SelectedValue + "'";
             }
 
+            if (favorite.SelectedIndex == 1)
+            {
+                query += " AND EXISTS (SELECT 1 FROM favorite f WHERE f.carid = SellCar.Id AND f.userid = '" + ViewState["userid"] + "')";
+            }
+
             //  for filter dataset
             da = new SqlDataAdapter(query, con);
             ds = new DataSet();
             da.Fill(ds);
-            
+
             // check there ds is empty or not 
             if (ds.Tables[0].Rows.Count <= 0)
             {
                 Label1.Visible = true;
                 GridView1.Visible = false;
             }
-            else 
+            else
             {
                 Label1.Visible = false;
-                GridView1 .Visible = true;
+                GridView1.Visible = true;
                 GridView1.DataSource = ds;
                 GridView1.DataBind();
             }
@@ -128,11 +140,54 @@ namespace CarDelearShip_Project
 
                 Response.Redirect("CarDetails.aspx?Id=" + CarId);
             }
+            else if (e.CommandName == "favorite")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                int CarId = Convert.ToInt32(GridView1.DataKeys[rowIndex].Value);
+                ViewState["favoritecarid"] = CarId;
+
+                GridViewRow row = GridView1.Rows[rowIndex];
+                Button btnFavorite = (Button)row.FindControl("favorite");
+
+                if (btnFavorite != null)
+                {
+                    if (btnFavorite.Text == "Add To ♡")
+                    {
+                        btnFavorite.Text = "Remove ♥";
+                        btnFavorite.ForeColor = System.Drawing.Color.Red;
+                        favoriteadd(); // Call your method to add favorite
+                    }
+                    else 
+                    {
+                        btnFavorite.Text = "Add To ♡";
+                        btnFavorite.ForeColor = System.Drawing.Color.Black;
+                        favoriteremove(); // Call your method to add favorite
+                    }
+                }
+            }
         }
 
+        void favoriteadd()
+        {
+            getCon();
+            if (Session["user"] != null)
+            {
+                string queary = "insert into favorite (userid,carid) values ('" + ViewState["userid"] + "','" + ViewState["favoritecarid"] + "')";
+                cmd = new SqlCommand(queary, con);
+                cmd.ExecuteNonQuery();
 
-
-
+            }
+        }
+        void favoriteremove()
+        {
+            getCon();
+            if (Session["user"] != null)
+            {
+                string queary = "delete from favorite where userid = '" + ViewState["userid"] + "' and carid = '" + ViewState["favoritecarid"] + "' ";
+                cmd = new SqlCommand(queary, con);
+                cmd.ExecuteNonQuery();
+            }
+        }
         protected void lnkProfile_Click(object sender, EventArgs e)
         {
 
@@ -163,6 +218,11 @@ namespace CarDelearShip_Project
         {
             BindProducts();
 
+        }
+
+        protected void favorite_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindProducts();
         }
     }
 }

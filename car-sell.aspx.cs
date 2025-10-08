@@ -274,6 +274,7 @@ namespace CarDelearShip_Project.photo
 
         protected void Button1_Click1(object sender, EventArgs e)
         {
+            imageupload();
             if (isimage1 == true && isimage2 == true && isimage3 == true && isimage4 == true && isimage5 == true)
             {
                 if (Button1.Text == "Submit Listing")
@@ -294,7 +295,7 @@ namespace CarDelearShip_Project.photo
                         holdercountry = ds.Tables[0].Rows[0]["Country"].ToString();
                         holderstate = ds.Tables[0].Rows[0]["State"].ToString();
                         holdercity = ds.Tables[0].Rows[0]["City"].ToString();
-                        imageupload();
+                        
 
                         //insert Car queary
                         cmd = new SqlCommand("insert into SellCar (Userid,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,HolderCountry,HolderState,HolderCity,image1,image2,image3,image4,image5) values('" + userid + "','" + brand.Text + "','" + model.Text + "','" + year.Text + "','" + mileage.Text + "','" + fueltype.Text + "','" + transmission.Text + "','" + price.Text + "','" + Description.Text + "','" + holdername + "','" + holderemail + "','" + holderphone + "','" + holdercountry + "','" + holderstate + "','" + holdercity + "','" + img1 + "','" + img2 + "','" + img3 + "','" + img4 + "','" + img5 + "')", con);
