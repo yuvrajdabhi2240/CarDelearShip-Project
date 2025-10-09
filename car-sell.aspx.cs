@@ -274,9 +274,10 @@ namespace CarDelearShip_Project.photo
 
         protected void Button1_Click1(object sender, EventArgs e)
         {
-
-            if (Button1.Text == "Submit Listing")
+            if (isimage1 == true && isimage2 == true && isimage3 == true && isimage4 == true && isimage5 == true)
             {
+                if (Button1.Text == "Submit Listing")
+                {
 
                 if (Session["user"] != null)
                 {
@@ -286,14 +287,14 @@ namespace CarDelearShip_Project.photo
                     ds = new DataSet();
                     da.Fill(ds);
 
-                    userid = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
-                    holdername = ds.Tables[0].Rows[0]["Username"].ToString();
-                    holderemail = ds.Tables[0].Rows[0]["Email"].ToString();
-                    holderphone = ds.Tables[0].Rows[0]["Phone"].ToString();
-                    holdercountry = ds.Tables[0].Rows[0]["Country"].ToString();
-                    holderstate = ds.Tables[0].Rows[0]["State"].ToString();
-                    holdercity = ds.Tables[0].Rows[0]["City"].ToString();
-                    imageupload();
+                        userid = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
+                        holdername = ds.Tables[0].Rows[0]["Username"].ToString();
+                        holderemail = ds.Tables[0].Rows[0]["Email"].ToString();
+                        holderphone = ds.Tables[0].Rows[0]["Phone"].ToString();
+                        holdercountry = ds.Tables[0].Rows[0]["Country"].ToString();
+                        holderstate = ds.Tables[0].Rows[0]["State"].ToString();
+                        holdercity = ds.Tables[0].Rows[0]["City"].ToString();
+                        imageupload();
 
                     if (brand.SelectedIndex != 0 && model.Text != "" && year.SelectedIndex != 0 && mileage.Text != "" && fueltype.SelectedIndex != 0 && transmission.SelectedIndex != 0 && price.Text != "")
                     {
