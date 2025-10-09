@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Collections;
+using System.Runtime.ConstrainedExecution;
 
 namespace CarDelearShip_Project
 {
@@ -33,11 +35,17 @@ namespace CarDelearShip_Project
                 }
                 else // Logged in
                 {
+                    da = new SqlDataAdapter("select Id from register where Email = '" + Session["user"] + "'", con);
+                    ds = new DataSet();
+                    da.Fill(ds);
+                    ViewState["userid"] = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
+
                     if (Request.QueryString["Id"] != null)
                     {
                         int Carid = Convert.ToInt32(Request.QueryString["Id"]);
                         getCon();
                         select(Carid);
+                        BridData(Carid);
                     }
                     else
                     {
@@ -73,12 +81,26 @@ namespace CarDelearShip_Project
 
             }
         }
-        void select(int id)
+        void BridData(int carid)
         {
-            da = new SqlDataAdapter("Select image1,image2,image3,image4,image5,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,(SELECT CountryName FROM Country WHERE Country.Id = SellCar.HolderCountry) AS HolderCountry,(SELECT StateName FROM State WHERE State.Id = SellCar.HolderState) AS HolderState,(SELECT CityName FROM City WHERE City.Id = SellCar.HolderCity) AS HolderCity from SellCar where Id = '" + id + "'", con);
+            getCon();
+            da = new SqlDataAdapter("Select Brand from SellCar Where Id = '" + carid + "'", con);
             ds = new DataSet();
             da.Fill(ds);
 
+            string brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+            da = new SqlDataAdapter("Select *,CASE WHEN EXISTS (SELECT 1 FROM favorite WHERE favorite.carid = SellCar.Id AND favorite.userid = '" + ViewState["userid"] + "') THEN 1 ELSE 0 END AS IsFavorite from SellCar where Brand = '" + brand + "' and Id != '" + carid + "'", con);
+            ds = new DataSet();
+            da.Fill(ds);
+
+            GridView2.DataSource = ds;
+            GridView2.DataBind();
+        }
+        void select(int carid)
+        {
+            da = new SqlDataAdapter("Select image1,image2,image3,image4,image5,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,(SELECT CountryName FROM Country WHERE Country.Id = SellCar.HolderCountry) AS HolderCountry,(SELECT StateName FROM State WHERE State.Id = SellCar.HolderState) AS HolderState,(SELECT CityName FROM City WHERE City.Id = SellCar.HolderCity) AS HolderCity,CASE WHEN EXISTS (SELECT 1 FROM favorite WHERE favorite.carid = SellCar.Id AND favorite.userid = '" + ViewState["userid"] + "') THEN 1 ELSE 0 END AS IsFavorite from SellCar where Id = '" + carid + "'", con);
+            ds = new DataSet();
+            da.Fill(ds);
 
             GridView1.DataSource = ds;
             GridView1.DataBind();
@@ -96,7 +118,7 @@ namespace CarDelearShip_Project
 
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
-            Session.Abandon();  
+            Session.Abandon();
             Response.Write("<script>alert('Logout Successfully');window.location='Login.aspx';</script>");
 
         }
@@ -104,12 +126,24 @@ namespace CarDelearShip_Project
         // fill dropdown with cars 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            GridView1.Visible = false;
-            compairdrop.Visible = true;
-           
+
+            Button clickedButton = (Button)sender;
+
+            if (clickedButton.Text == "Compare")
+            {
+                compairdrop.Visible = true;
+                clickedButton.Text = "Remove Compare";
+            }
+            else
+            {
+
+                compairdrop.Visible = false;
+                pnlCompare.Visible = false;
+                clickedButton.Text = "Compare";
+            }
 
             getCon();
-            da = new SqlDataAdapter("select Id,Brand,Model from SellCar",con);
+            da = new SqlDataAdapter("select Id,Brand,Model from SellCar", con);
             ds = new DataSet();
             da.Fill(ds);
             compairdrop.Items.Clear();
@@ -118,11 +152,16 @@ namespace CarDelearShip_Project
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
                 string text = ds.Tables[0].Rows[i]["Brand"].ToString() + " - " + ds.Tables[0].Rows[i]["Model"].ToString();
-                string value = ds.Tables[0].Rows[i]["Id"].ToString(); 
+                string value = ds.Tables[0].Rows[i]["Id"].ToString();
                 compairdrop.Items.Add(new ListItem(text, value));
             }
 
-            ViewState["SelectedCarId"] = Request.QueryString["Id"];
+            string excludedCarId = Request.QueryString["Id"];
+
+            ListItem itemToRemove = compairdrop.Items.FindByValue(excludedCarId);
+            compairdrop.Items.Remove(itemToRemove);
+
+            ViewState["SelectedCarId"] = Convert.ToInt32(Request.QueryString["Id"].ToString());
         }
 
         // fetch car detils and fill in panels details
@@ -132,14 +171,14 @@ namespace CarDelearShip_Project
             int Car2Id = Convert.ToInt32(compairdrop.SelectedValue.ToString());
 
             getCon();
-            da = new SqlDataAdapter("SELECT Id,Brand,Model,Year,Mileage,FuelType,Transmission,Price,image1 from SellCar where Id in ('"+Car1Id+"','"+Car2Id+"')",con);
+            da = new SqlDataAdapter("SELECT Id,Brand,Model,Year,Mileage,FuelType,Transmission,Price,image1 from SellCar where Id in ('" + Car1Id + "','" + Car2Id + "')", con);
             ds = new DataSet();
             da.Fill(ds);
 
             if (ds.Tables[0].Rows.Count == 2)
             {
                 //First Car(Row 0)
-                
+
                 lblCar1Model.Text = ds.Tables[0].Rows[0]["Model"].ToString();
                 lblCar1Price.Text = ds.Tables[0].Rows[0]["Price"].ToString();
                 imgcar1.ImageUrl = ds.Tables[0].Rows[0]["image1"].ToString();
@@ -149,7 +188,7 @@ namespace CarDelearShip_Project
                 lblCar1Year.Text = ds.Tables[0].Rows[0]["Year"].ToString();
                 lblCar1Fuel.Text = ds.Tables[0].Rows[0]["FuelType"].ToString();
                 lblCar1Trans.Text = ds.Tables[0].Rows[0]["Transmission"].ToString();
-                
+
                 // Second Car (Row 1)
 
                 lblCar2Model.Text = ds.Tables[0].Rows[1]["Model"].ToString();
@@ -165,6 +204,110 @@ namespace CarDelearShip_Project
             }
 
             pnlCompare.Visible = true;
+        }
+
+
+
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "favorite")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                GridViewRow row = GridView1.Rows[rowIndex];
+                Button btnFavorite = (Button)row.FindControl("favorite");
+
+                int CarId = Convert.ToInt32(Request.QueryString["Id"].ToString());
+
+                if (btnFavorite != null)
+                {
+                    if (btnFavorite.Text == "Add To ♡")
+                    {
+                        btnFavorite.Text = "Remove ♥";
+                        btnFavorite.ForeColor = System.Drawing.Color.Red;
+                        favoriteadd(CarId); // Call your method to add favorite
+                    }
+                    else
+                    {
+                        btnFavorite.Text = "Add To ♡";
+                        btnFavorite.ForeColor = System.Drawing.Color.Black;
+                        favoriteremove(CarId); // Call your method to add favorite
+                    }
+                }
+            }
+
+
+            else if (e.CommandName == "BookSchedual")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                GridViewRow row = GridView1.Rows[rowIndex];
+                Button book = (Button)row.FindControl("book");
+                if (book.Text == "Book Schedual")
+                {
+
+                    compairdrop.Visible = false;
+                    pnlCompare.Visible = false;
+                }
+            }
+        }
+
+
+
+        protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "viewcarfavorite")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                GridViewRow row = GridView2.Rows[rowIndex];
+                Button Favorite = (Button)row.FindControl("favoritecars");
+
+                int CarId = Convert.ToInt32(GridView2.DataKeys[rowIndex].Value);
+
+                if (Favorite != null)
+                {
+
+                    if (Favorite.Text == "Add To ♡")
+                    {
+                        Favorite.Text = "Remove ♥";
+                        Favorite.ForeColor = System.Drawing.Color.Red;
+                        favoriteadd(CarId); // Call your method to add favorite
+                    }
+                    else
+                    {
+                        Favorite.Text = "Add To ♡";
+                        Favorite.ForeColor = System.Drawing.Color.Black;
+                        favoriteremove(CarId); // Call your method to add favorite
+                    }
+                }
+            }
+            else if (e.CommandName == "ViewMore")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                GridViewRow row = GridView2.Rows[rowIndex];
+
+                int CarId = Convert.ToInt32(GridView2.DataKeys[rowIndex].Value);
+
+                Response.Redirect("CarDetails.aspx?Id=" + CarId);
+            }
+        }
+        void favoriteadd(int car)
+        {
+            getCon();
+            if (Session["user"] != null)
+            {
+                string queary = "insert into favorite (userid,carid) values ('" + ViewState["userid"] + "','" + car + "')";
+                cmd = new SqlCommand(queary, con);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        void favoriteremove(int car)
+        {
+            getCon();
+            if (Session["user"] != null)
+            {
+               string queary = "delete from favorite where userid = '" + ViewState["userid"] + "' and carid = '" + car + "' ";
+                cmd = new SqlCommand(queary, con);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

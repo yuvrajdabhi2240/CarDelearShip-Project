@@ -1,7 +1,18 @@
-﻿.car-grid {
+﻿/* Center the entire GridView */
+.grid-container {
+    width: 90%; /* Reduce width a bit so it's not edge-to-edge */
+    max-width: 1200px; /* Keeps it nice and centered on large screens */
+    margin: 0 auto; /* Centers horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+}
+
+.car-grid {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 20px;
+    border-spacing: 0 30px;
     font-family: Arial, sans-serif;
 }
 
@@ -10,11 +21,13 @@
         border: 1px solid #ddd;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
     }
 
     .car-grid td {
         padding: 20px;
         vertical-align: top;
+
     }
 
 /* Slider */
@@ -106,7 +119,7 @@
     }
 
 .compair_btn {
-    right: 10px;
+    margin-top  :10px;
 }
 
 .booked_btn {
@@ -134,12 +147,17 @@
 
 /* Slider */
 .image-slider {
+    align-content : center;
     position: relative;
-    width: 260px;
-    height: 180px;
+    width: 600px; /* Make it stretch to container width */
+    max-width: 600px; /* Limit max width for nice proportion */
+    height: 340px; /* Bigger image height */
+    margin: 0 auto; /* Center horizontally */
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: #fff;
 }
 
     .image-slider img {
