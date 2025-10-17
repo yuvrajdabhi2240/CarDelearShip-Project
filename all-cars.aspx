@@ -145,7 +145,7 @@
                         <asp:DropDownList ID="brand" runat="server" AutoPostBack="True" OnSelectedIndexChanged="brand_SelectedIndexChanged"></asp:DropDownList>
                     </td>
                     <td>
-                        <asp:DropDownList ID="favorite" runat="server" AutoPostBack="True" OnSelectedIndexChanged="favorite_SelectedIndexChanged">
+                        <asp:DropDownList ID="favorite" runat="server" AutoPostBack="True" IndexChanged="favorite_SelectedIndexChanged">
                             <asp:ListItem Value=" Select Favorite "></asp:ListItem>
                             <asp:ListItem Value="Favorite"></asp:ListItem>
                             <asp:ListItem Value="All Car"></asp:ListItem>

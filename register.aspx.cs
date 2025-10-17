@@ -26,6 +26,7 @@ namespace CarDelearShip_Project
         int i;
         bool Isemail = false;
         string pf;
+        bool imagevalid = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             getCon();
@@ -40,19 +41,22 @@ namespace CarDelearShip_Project
         {
             if (Button1.Text == "Create")
             {
-                emailcheck();
-                if (Isemail == true)
+                profileimage();
+                if (imagevalid == true)
                 {
-                    getCon();
-                    profileimage();
-                    cmd = new SqlCommand("insert into register (Username,Email,Password,Phone,ProfileImage,Country,State,City) values('" + fullName.Text + "','" + email.Text + "','" + password.Text + "','" + phone.Text + "','" + pf + "','" + ViewState["countryid"] + "','" + ViewState["stateid"] + "','" + ViewState["cityid"] + "')", con);
-                    cmd.ExecuteNonQuery();
-                    clear();
-                    Response.Write("<script>alert('Register Successfully,Now you can Login');window.location='Login.aspx';</script>");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Email is already registered');</script>");
+                    emailcheck();
+                    if (Isemail == true)
+                    {
+                        getCon();
+                        cmd = new SqlCommand("insert into register (Username,Email,Password,Phone,ProfileImage,Country,State,City) values('" + fullName.Text + "','" + email.Text + "','" + password.Text + "','" + phone.Text + "','" + pf + "','" + ViewState["countryid"] + "','" + ViewState["stateid"] + "','" + ViewState["cityid"] + "')", con);
+                        cmd.ExecuteNonQuery();
+                        clear();
+                        Response.Write("<script>alert('Register Successfully,Now you can Login');window.location='Login.aspx';</script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Email is already registered');</script>");
+                    }
                 }
             }
         }
@@ -82,6 +86,7 @@ namespace CarDelearShip_Project
                 {
                     pf = "photo/profileimage/" + ProfileImage.FileName;
                     ProfileImage.SaveAs(Server.MapPath(pf));
+                    imagevalid = true;
                 }
                 else
                 {

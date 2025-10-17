@@ -93,9 +93,9 @@ namespace CarDelearShip_Project.photo
             GridView1.DataSource = ds;
             GridView1.DataBind();
 
-            da = new SqlDataAdapter("select * from Brand",con);
+            da = new SqlDataAdapter("select * from Brand", con);
             ds = new DataSet();
-            da.Fill (ds);
+            da.Fill(ds);
             brand.Items.Insert(0, new ListItem("--- Select Brand ---", ""));
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -258,7 +258,7 @@ namespace CarDelearShip_Project.photo
             if (photo5.HasFile)
             {
                 string ext = Path.GetExtension(photo5.FileName).ToLower();
-                if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".gif")
+                 if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".gif")
                 {
                     img5 = "photo/SellCar/" + photo5.FileName;
                     photo5.SaveAs(Server.MapPath(img5));
@@ -274,19 +274,18 @@ namespace CarDelearShip_Project.photo
 
         protected void Button1_Click1(object sender, EventArgs e)
         {
-            imageupload();
             if (isimage1 == true && isimage2 == true && isimage3 == true && isimage4 == true && isimage5 == true)
             {
                 if (Button1.Text == "Submit Listing")
                 {
 
-                    if (Session["user"] != null)
-                    {
-                        getCon();
+                if (Session["user"] != null)
+                {
+                    getCon();
 
-                        da = new SqlDataAdapter("select * from register where Email = '" + Session["user"] + "'", con);
-                        ds = new DataSet();
-                        da.Fill(ds);
+                    da = new SqlDataAdapter("select * from register where Email = '" + Session["user"] + "'", con);
+                    ds = new DataSet();
+                    da.Fill(ds);
 
                         userid = Convert.ToInt32(ds.Tables[0].Rows[0]["Id"].ToString());
                         holdername = ds.Tables[0].Rows[0]["Username"].ToString();
@@ -295,10 +294,14 @@ namespace CarDelearShip_Project.photo
                         holdercountry = ds.Tables[0].Rows[0]["Country"].ToString();
                         holderstate = ds.Tables[0].Rows[0]["State"].ToString();
                         holdercity = ds.Tables[0].Rows[0]["City"].ToString();
-                        
+                        imageupload();
 
+                    if (brand.SelectedIndex != 0 && model.Text != "" && year.SelectedIndex != 0 && mileage.Text != "" && fueltype.SelectedIndex != 0 && transmission.SelectedIndex != 0 && price.Text != "")
+                    {
+                        getCon();
+                        string queary = "insert into SellCar (Userid,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,HolderCountry,HolderState,HolderCity,image1,image2,image3,image4,image5) values('" + userid + "','" + brand.Text + "','" + model.Text + "','" + year.Text + "','" + mileage.Text + "','" + fueltype.Text + "','" + transmission.Text + "','" + price.Text + "','" + Description.Text + "','" + holdername + "','" + holderemail + "','" + holderphone + "','" + holdercountry + "','" + holderstate + "','" + holdercity + "','" + img1 + "','" + img2 + "','" + img3 + "','" + img4 + "','" + img5 + "')" ;
                         //insert Car queary
-                        cmd = new SqlCommand("insert into SellCar (Userid,Brand,Model,Year,Mileage,FuelType,Transmission,Price,Description,HolderName,HolderEmail,HolderPhone,HolderCountry,HolderState,HolderCity,image1,image2,image3,image4,image5) values('" + userid + "','" + brand.Text + "','" + model.Text + "','" + year.Text + "','" + mileage.Text + "','" + fueltype.Text + "','" + transmission.Text + "','" + price.Text + "','" + Description.Text + "','" + holdername + "','" + holderemail + "','" + holderphone + "','" + holdercountry + "','" + holderstate + "','" + holdercity + "','" + img1 + "','" + img2 + "','" + img3 + "','" + img4 + "','" + img5 + "')", con);
+                        cmd = new SqlCommand(queary, con);
                         cmd.ExecuteNonQuery();
                         clear();
                         Response.Write("<script>alert('Car Add Successfully...');window.location='car-sell.aspx';</script>");
@@ -310,14 +313,19 @@ namespace CarDelearShip_Project.photo
                 }
                 else
                 {
-                    getCon();
-
-                    cmd = new SqlCommand("update SellCar SET Brand = '" + brand.SelectedValue + "',Model='" + model.Text + "',Year = '" + year.SelectedValue + "',Mileage='" + mileage.Text + "',FuelType = '" + fueltype.SelectedValue + "',Transmission = '" + transmission.SelectedValue + "',Price = '" + price.Text + "',Description='" + Description.Text + "' WHERE Id = '" + ViewState["carid"] + "'", con);
-                    cmd.ExecuteNonQuery();
-                    clear();
-                    Response.Write("<script>alert('Car updated successfully!');</script>");
+                    Response.Write("<script>alert('Something Went Wrong !!!');</script>");
                 }
             }
+            else
+            {
+                getCon();
+
+                cmd = new SqlCommand("update SellCar SET Brand = '" + brand.SelectedValue + "',Model='" + model.Text + "',Year = '" + year.SelectedValue + "',Mileage='" + mileage.Text + "',FuelType = '" + fueltype.SelectedValue + "',Transmission = '" + transmission.SelectedValue + "',Price = '" + price.Text + "',Description='" + Description.Text + "' WHERE Id = '" + ViewState["carid"] + "'", con);
+                cmd.ExecuteNonQuery();
+                clear();
+                Response.Write("<script>alert('Car updated successfully!');</script>");
+            }
+
         }
     }
 }
