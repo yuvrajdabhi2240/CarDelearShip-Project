@@ -188,8 +188,6 @@
                                             CssClass="btn" />
 
                                         <asp:Button ID="favorite" runat="server" CssClass="btn hearth" Text='<%# Convert.ToInt32(Eval("IsFavorite")) == 1 ? "Remove ♥" : "Add To ♡" %>' CommandName="favorite" CommandArgument='<%# Container.DataItemIndex %>' ForeColor='<%# Convert.ToInt32(Eval("IsFavorite")) == 1 ? System.Drawing.Color.Red : System.Drawing.Color.Black %>' />
-
-
                                     </div>
                                 </div>
                             </ItemTemplate>

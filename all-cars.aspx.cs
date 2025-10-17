@@ -68,6 +68,7 @@ namespace CarDelearShip_Project
                 da = new SqlDataAdapter("select * from Brand", con);
                 ds = new DataSet();
                 da.Fill(ds);
+
                 brand.Items.Insert(0, new ListItem(" Select Brand ", ""));
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
@@ -109,7 +110,7 @@ namespace CarDelearShip_Project
             //  for filter dataset
             da = new SqlDataAdapter(query, con);
             ds = new DataSet();
-            da.Fill(ds);
+            da.Fill(ds);    
 
             // check there ds is empty or not 
             if (ds.Tables[0].Rows.Count <= 0)

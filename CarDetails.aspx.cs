@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Collections;
 using System.Runtime.ConstrainedExecution;
+using System.Data.SqlTypes;
 
 namespace CarDelearShip_Project
 {
@@ -104,6 +105,26 @@ namespace CarDelearShip_Project
 
             GridView1.DataSource = ds;
             GridView1.DataBind();
+
+            string queary = "SELECT Id From SellCar where Id = '" + carid + "' AND Userid = '" + ViewState["userid"] + "'";
+            da = new SqlDataAdapter(queary, con);
+            ds = new DataSet();
+            da.Fill(ds);
+
+            GridViewRow row = GridView1.Rows[0];
+            Label lbl = (Label)row.FindControl("checkbook");
+            Button btn = (Button)row.FindControl("book");
+
+            if (ds.Tables[0].Rows.Count == 1)
+            {
+                lbl.Visible = true;
+                btn.Visible = false;
+            }
+            else
+            {
+                lbl.Visible = false;
+                btn.Visible = true;
+            }
         }
         void getCon() // Connection with database
         {
@@ -210,6 +231,7 @@ namespace CarDelearShip_Project
 
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+
             if (e.CommandName == "favorite")
             {
                 int rowIndex = Convert.ToInt32(e.CommandArgument);
@@ -235,19 +257,42 @@ namespace CarDelearShip_Project
                 }
             }
 
-
-            else if (e.CommandName == "BookSchedual")
+            if (e.CommandName == "BookSchedual")
             {
-                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                int rowIndex = 0;
                 GridViewRow row = GridView1.Rows[rowIndex];
-                Button book = (Button)row.FindControl("book");
-                if (book.Text == "Book Schedual")
-                {
 
+                Label datetxt = (Label)row.FindControl("datelab");
+                TextBox cal = (TextBox)row.FindControl("date");
+                TextBox time = (TextBox)row.FindControl("time");
+                Button book = (Button)row.FindControl("book");
+                if (book.Text == "Test Car Schedual")
+                {
+                    book.Text = "Book Schedual";
+                    cal.Visible = true;
+                    time.Visible = true;
+                    datetxt.Visible = true;
                     compairdrop.Visible = false;
                     pnlCompare.Visible = false;
                 }
+                else
+                {
+                    string fullDateTimeString = cal.Text + " " + time.Text;
+
+                    if (DateTime.TryParse(fullDateTimeString, out DateTime scheduledDateTime))
+                    {
+                        DateTime now = DateTime.Now;
+
+                        if (scheduledDateTime < now.AddMinutes(-1))
+                        {
+                            cal.Text = now.ToString("yyyy-MM-dd");
+                            time.Text = now.ToString("HH:mm");
+                        }
+
+                    }
+                }
             }
+
         }
 
 
@@ -304,7 +349,7 @@ namespace CarDelearShip_Project
             getCon();
             if (Session["user"] != null)
             {
-               string queary = "delete from favorite where userid = '" + ViewState["userid"] + "' and carid = '" + car + "' ";
+                string queary = "delete from favorite where userid = '" + ViewState["userid"] + "' and carid = '" + car + "' ";
                 cmd = new SqlCommand(queary, con);
                 cmd.ExecuteNonQuery();
             }

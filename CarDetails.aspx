@@ -23,9 +23,10 @@
 
         .book {
             margin-top: 10px;
+            width: 100%;
         }
 
-        
+
         .product-car {
             width: 100%;
             height: 200px;
@@ -34,7 +35,36 @@
         }
 
         .car-show {
-            padding-top:15px;
+            margin-top: 15px;
+        }
+
+        .checkbook {
+            /* Visual Styling */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; /* White text for contrast */
+            border: 2px solid black; /* A slightly darker green border */
+            border-radius: 10px; /* Rounded corners for a modern look */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+            /* Text Styling */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold; /* Make the text stand out */
+            font-size: 1.2em; /* Slightly larger than standard text */
+            text-transform: uppercase; /* All caps for impact */
+            /* Spacing and Positioning */
+            padding: 3px 10px; /* Padding inside the box */
+            margin: 10px 0; /* Margin above/below to separate it from other content */
+            display: inline-block; /* Allows padding and margin to be applied correctly */
+            letter-spacing: 1px; /* Spacing between letters */
+        }
+
+            /* Optional: A hover effect for a bit of flair */
+            .checkbook:hover {
+                background-color: #388E3C;
+                cursor: default; /* Change cursor to indicate it's not a clickable button */
+            }
+
+        .datetime {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -103,7 +133,15 @@
                                             <div class="compair_btn">
                                                 <asp:Button ID="Button1" runat="server" CssClass="btn" Text="Compare" CommandName="compare" OnClick="Button1_Click" />
                                                 <asp:Button ID="favorite" runat="server" CssClass="btn" Text='<%# Convert.ToInt32(Eval("IsFavorite")) == 1 ? "Remove ♥" : "Add To ♡" %>' CommandName="favorite" CommandArgument='<%# Container.DataItemIndex %>' ForeColor='<%# Convert.ToInt32(Eval("IsFavorite")) == 1 ? System.Drawing.Color.Red : System.Drawing.Color.Black %>' /><br />
-                                                <asp:Button ID="book" runat="server" CssClass="btn book" CommandName="BookSchedual" Text="Book Schedual" />
+                                                <div class="datetime">
+                                                    <asp:Label ID="datelab" runat="server" Text="Select Date & Time : " Visible="False"></asp:Label>
+                                                    <asp:TextBox ID="date" runat="server" Visible="false" TextMode="Date"></asp:TextBox>
+                                                    <asp:TextBox ID="time" runat="server" Visible="false" TextMode="Time"></asp:TextBox>
+                                                </div>
+                                                <div class="book">
+                                                    <asp:Button ID="book" runat="server" CssClass="btn " CommandName="BookSchedual" Text="Test Car Schedual" Visible="False" />
+                                                </div>
+                                                <asp:Label ID="checkbook" runat="server" class="checkbook" Text="It's Your Car" Visible="False"></asp:Label>
                                             </div>
                                         </center>
                                     </ItemTemplate>
