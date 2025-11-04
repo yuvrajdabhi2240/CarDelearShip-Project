@@ -256,44 +256,59 @@ namespace CarDelearShip_Project
                     }
                 }
             }
+            // For Booking test car comming soon
+            //else if (e.CommandName == "BookScheduals")
+            //{
+            //    int rowIndex = 0;
+            //    GridViewRow row = GridView1.Rows[rowIndex];
+            //    Label datetxt = (Label)row.FindControl("datelab");
+            //    TextBox cal = (TextBox)row.FindControl("date");
+            //    TextBox time = (TextBox)row.FindControl("time");
+            //    Button book = (Button)row.FindControl("book");
+            //    book.Visible = false;
+            //    Button BookSc = (Button)row.FindControl("bookschedual");
+            //    BookSc.Visible = true;
 
-            if (e.CommandName == "BookSchedual")
-            {
-                int rowIndex = 0;
-                GridViewRow row = GridView1.Rows[rowIndex];
 
-                Label datetxt = (Label)row.FindControl("datelab");
-                TextBox cal = (TextBox)row.FindControl("date");
-                TextBox time = (TextBox)row.FindControl("time");
-                Button book = (Button)row.FindControl("book");
-                if (book.Text == "Test Car Schedual")
-                {
-                    book.Text = "Book Schedual";
-                    cal.Visible = true;
-                    time.Visible = true;
-                    datetxt.Visible = true;
-                    compairdrop.Visible = false;
-                    pnlCompare.Visible = false;
-                }
-                else
-                {
-                    string fullDateTimeString = cal.Text + " " + time.Text;
+            //    cal.Visible = true;
+            //    time.Visible = true;
+            //    datetxt.Visible = true;
+            //    compairdrop.Visible = false;
+            //    pnlCompare.Visible = false;
 
-                    if (DateTime.TryParse(fullDateTimeString, out DateTime scheduledDateTime))
-                    {
-                        DateTime now = DateTime.Now;
 
-                        if (scheduledDateTime < now.AddMinutes(-1))
-                        {
-                            cal.Text = now.ToString("yyyy-MM-dd");
-                            time.Text = now.ToString("HH:mm");
-                        }
 
-                    }
-                }
-            }
+            //}
+            //else if (e.CommandName == "Book")
+            //{
+            //    int rowIndex = 0;
+            //    GridViewRow row = GridView1.Rows[rowIndex];
+            //    Label datetxt = (Label)row.FindControl("datelab");
+            //    TextBox cal = (TextBox)row.FindControl("date");
+            //    TextBox time = (TextBox)row.FindControl("time");
+            //    Button book = (Button)row.FindControl("book");
 
+
+            //    string fullDateTimeString = cal.Text + " " + time.Text;
+
+            //    if (DateTime.TryParse(fullDateTimeString, out DateTime scheduledDateTime))
+            //    {
+            //        DateTime now = DateTime.Now;
+
+            //        if (scheduledDateTime < now.AddMinutes(-1))
+            //        {
+            //            cal.Text = now.ToString("yyyy-MM-dd");
+            //            time.Text = now.ToString("HH:mm");
+            //        }
+            //        else
+            //        {
+            //            Response.Write("<script>alert('Please Check Your Date its not valid');</script>");
+            //        }
+            //    }
+            //}
         }
+
+
 
 
 

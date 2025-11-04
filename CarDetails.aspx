@@ -139,7 +139,9 @@
                                                     <asp:TextBox ID="time" runat="server" Visible="false" TextMode="Time"></asp:TextBox>
                                                 </div>
                                                 <div class="book">
-                                                    <asp:Button ID="book" runat="server" CssClass="btn " CommandName="BookSchedual" Text="Test Car Schedual" Visible="False" />
+                                                    <asp:Button ID="bookSchedual" runat="server" CssClass="btn " Text="Book Schedual" />
+                                                
+                                                    <asp:Button ID="book" runat="server" CssClass="btn" CommandName="BookScheduals" Text="Test Car Schedual" Visible="False" />
                                                 </div>
                                                 <asp:Label ID="checkbook" runat="server" class="checkbook" Text="It's Your Car" Visible="False"></asp:Label>
                                             </div>

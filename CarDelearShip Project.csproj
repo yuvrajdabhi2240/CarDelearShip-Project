@@ -76,6 +76,7 @@
     <Content Include="CarDetails.aspx" />
     <Content Include="css\All-Car.css" />
     <Content Include="css\compaircar.css" />
+    <Content Include="css\inbox.css" />
     <Content Include="css\profile.css" />
     <Content Include="css\styles.css" />
     <Content Include="images\car1.jpg" />
@@ -87,6 +88,7 @@
     <Content Include="images\hero-car-marketplace.jpg" />
     <Content Include="images\index bg.jpg" />
     <Content Include="images\placeholder.txt" />
+    <Content Include="inbox.aspx" />
     <Content Include="index.aspx" />
     <Content Include="js\script.js" />
     <Content Include="Login.aspx" />
@@ -121,6 +123,13 @@
     </Compile>
     <Compile Include="CarDetails.aspx.designer.cs">
       <DependentUpon>CarDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="inbox.aspx.cs">
+      <DependentUpon>inbox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="inbox.aspx.designer.cs">
+      <DependentUpon>inbox.aspx</DependentUpon>
     </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

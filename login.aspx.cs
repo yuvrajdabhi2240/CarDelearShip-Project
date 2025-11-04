@@ -38,20 +38,21 @@ namespace Database_Connectivity
         {
             if (email.Text != "" && password.Text != "")
             {
-                getCon();
-                cmd = new SqlCommand("SELECT count(*) from Register where Email = '" + email.Text + "' and Password = '" + password.Text + "'", con);
-                i = Convert.ToInt32(cmd.ExecuteScalar());
+                    getCon();
+                    cmd = new SqlCommand("SELECT count(*) from Register where Email = '" + email.Text + "' and Password = '" + password.Text + "'", con);
+                    i = Convert.ToInt32(cmd.ExecuteScalar());
 
-                if (i > 0)
-                {
-                    Session["user"] = email.Text;
-                    Response.Redirect("index.aspx");
-                }
-                else
-                {
-                    Label1.Visible = true;
-                    Label1.Text = "incorrect Email And Password ... ";
-                }
+                    if (i > 0)
+                    {
+                        Session["user"] = email.Text;
+                        Response.Redirect("index.aspx");
+                    }
+                    else
+                    {
+                        Label1.Visible = true;
+                        Label1.Text = "incorrect Email And Password ... ";
+                    }
+                
             }
             else
             {
