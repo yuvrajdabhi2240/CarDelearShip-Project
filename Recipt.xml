@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Table">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" type="xs:int" minOccurs="0" />
+              <xs:element name="Userid" type="xs:int" minOccurs="0" />
+              <xs:element name="Brand" type="xs:string" minOccurs="0" />
+              <xs:element name="Model_x0020_" type="xs:string" minOccurs="0" />
+              <xs:element name="Year" type="xs:string" minOccurs="0" />
+              <xs:element name="Mileage" type="xs:int" minOccurs="0" />
+              <xs:element name="FuelType" type="xs:string" minOccurs="0" />
+              <xs:element name="Transmission" type="xs:string" minOccurs="0" />
+              <xs:element name="Price" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Description" type="xs:string" minOccurs="0" />
+              <xs:element name="HolderName" type="xs:string" minOccurs="0" />
+              <xs:element name="HolderEmail" type="xs:string" minOccurs="0" />
+              <xs:element name="HolderPhone" type="xs:string" minOccurs="0" />
+              <xs:element name="HolderCountry" type="xs:string" minOccurs="0" />
+              <xs:element name="HolderState" type="xs:string" minOccurs="0" />
+              <xs:element name="HolderCity" type="xs:string" minOccurs="0" />
+              <xs:element name="image1" type="xs:string" minOccurs="0" />
+              <xs:element name="image2" type="xs:string" minOccurs="0" />
+              <xs:element name="image3" type="xs:string" minOccurs="0" />
+              <xs:element name="image4" type="xs:string" minOccurs="0" />
+              <xs:element name="image5" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
